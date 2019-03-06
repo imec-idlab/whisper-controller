@@ -167,6 +167,18 @@ class moteConnector(eventBusClient.eventBusClient):
                 self._sendToMoteProbe(
                     dataToSend = dataToSend,
                 )
+            elif data['action'][0]==moteState.moteState.WHISPER_CHANGE_PARENT:
+                if len(data['action']) == 3:
+                    dataToSend=[
+                        OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER,
+                        int(data['action'][1]),
+                        int(data['action'][2])
+                    ]
+                    print "Switching node: " + str(data['action'][1]) + " to parent " + str(data['action'][2])
+                    print(dataToSend)
+                    self._sendToMoteProbe(dataToSend = dataToSend)
+                else:
+                    print "Not the correct amount of parameters (2)."
             else:
                 raise SystemError('unexpected action={0}'.format(data['action']))
     

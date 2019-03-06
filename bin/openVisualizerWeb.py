@@ -483,6 +483,31 @@ class OpenVisualizerWeb(eventBusClient.eventBusClient,Cmd):
 
     #===== callbacks
     
+    def do_whisper(self, arg):
+        """
+        Perform whisper parent switch
+        """
+        if not arg:
+            self.stdout.write('Available ports:')
+            if self.app.moteStates:
+                for ms in self.app.moteStates:
+                    self.stdout.write('  {0}'.format(ms.moteConnector.serialport))
+            else:
+                self.stdout.write('  <none>')
+            self.stdout.write('\n')
+        else:
+            try:
+                [port,target,new_parent] = arg.split(' ')
+                for ms in self.app.moteStates:
+                    try:
+                        if ms.moteConnector.serialport==port:
+                            ms.triggerAction([moteState.moteState.WHISPER_CHANGE_PARENT,target,new_parent])
+                    except ValueError as err:
+                        self.stdout.write(err)
+                        self.stdout.write('\n')
+            except ValueError as err:
+                print "{0}:{1}".format(type(err),err)
+    
     def do_state(self, arg):
         """
         Prints provided state, or lists states.
