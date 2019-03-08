@@ -168,13 +168,20 @@ class moteConnector(eventBusClient.eventBusClient):
                     dataToSend = dataToSend,
                 )
             elif data['action'][0]==moteState.moteState.WHISPER_CHANGE_PARENT:
-                if len(data['action']) == 3:
-                    dataToSend=[
+                if len(data['action']) == 4:
+                    dataToSend = [
                         OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER,
                         int(data['action'][1]),
                         int(data['action'][2])
                     ]
-                    print "Switching node: " + str(data['action'][1]) + " to parent " + str(data['action'][2])
+                    if int(data['action'][3]) > 255:
+                        print "Sending large rank, splitting into 2 bytes."
+                        dataToSend.append(int(int(data['action'][3]) & 0xff00) >> 8)
+                        dataToSend.append(int(int(data['action'][3]) & 0x00ff))
+                    else:
+                        dataToSend.append(int(data['action'][3]))
+                    print "Updating node: " + str(data['action'][1]) + " to rank: " + str(data['action'][3]) + \
+                          " for parent " + str(data['action'][2])
                     print(dataToSend)
                     self._sendToMoteProbe(dataToSend = dataToSend)
                 else:

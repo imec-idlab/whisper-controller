@@ -497,14 +497,13 @@ class OpenVisualizerWeb(eventBusClient.eventBusClient,Cmd):
             self.stdout.write('\n')
         else:
             try:
-                [port,target,new_parent] = arg.split(' ')
+                [port,target,new_parent,rank] = arg.split(' ')
                 for ms in self.app.moteStates:
                     try:
                         if ms.moteConnector.serialport==port:
-                            ms.triggerAction([moteState.moteState.WHISPER_CHANGE_PARENT,target,new_parent])
+                            ms.triggerAction([moteState.moteState.WHISPER_CHANGE_PARENT,target,new_parent,rank])
                     except ValueError as err:
-                        self.stdout.write(err)
-                        self.stdout.write('\n')
+                        self.stdout("Invalid whisper command: whisper <mote> <target_id> <parent_id> <new_rank>")
             except ValueError as err:
                 print "{0}:{1}".format(type(err),err)
     

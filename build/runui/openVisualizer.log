@@ -2983,3 +2983,736 @@
 2019-03-06 21:16:13,352 [ParserInfoErrorCritical:ERROR] 1 [ICMPv6RPL] no free packet buffer (code location 0)
 2019-03-06 21:16:13,662 [openVisualizerApp:INFO] Closing OpenVisualizer
 2019-03-06 21:16:13,663 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 14:10:35,304 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:10:35,304 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:10:35,304 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:10:35,304 [RPL:INFO] create instance
+2019-03-08 14:10:35,304 [JRC:INFO] create instance
+2019-03-08 14:10:35,395 [SimEngine:INFO] starting
+2019-03-08 14:10:35,405 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:10:35,406 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:10:35,409 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:10:35,410 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:10:35,411 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:10:35,411 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:10:35,412 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:10:35,412 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:10:35,415 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:10:35,419 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:10:35,436 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,437 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,437 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,446 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,446 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,446 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,454 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,454 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,454 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,464 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,464 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,464 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,474 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,475 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,475 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:10:35,517 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:10:35,518 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:10:35,569 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:10:35,574 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:10:35,575 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:10:35,575 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:10:35,576 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:10:35,577 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:10:35,578 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:10:35,580 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:10:35,582 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 14:10:43,397 [openVisualizerWeb:INFO] Toggle root status for moteid 0001
+2019-03-08 14:10:43,403 [ParserInfoErrorCritical:ERROR] 1 [IEEE802154E] wrong state 1 in startSlot, at slotOffset 1
+2019-03-08 14:10:43,455 [RPL:INFO] registering DAGroot 14-15-92-cc-00-00-00-01
+2019-03-08 14:10:48,293 [ParserInfoErrorCritical:INFO] 2 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:10:48,624 [JRC:INFO] Node 141592cc00000002 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:10:48,747 [ParserInfoErrorCritical:INFO] 2 [CJOIN] node joined
+2019-03-08 14:10:51,727 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:10:57,523 [ParserInfoErrorCritical:INFO] 3 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:10:59,396 [ParserInfoErrorCritical:INFO] 4 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:11:00,126 [JRC:INFO] Node 141592cc00000004 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:11:00,159 [ParserInfoErrorCritical:INFO] 4 [CJOIN] node joined
+2019-03-08 14:11:01,391 [ParserInfoErrorCritical:INFO] 4 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:11:01,818 [JRC:INFO] Node 141592cc00000003 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:11:01,977 [ParserInfoErrorCritical:INFO] 3 [CJOIN] node joined
+2019-03-08 14:11:02,266 [ParserInfoErrorCritical:INFO] 5 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:11:02,855 [ParserInfoErrorCritical:INFO] 3 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:11:06,843 [JRC:INFO] Node 141592cc00000005 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:11:06,966 [ParserInfoErrorCritical:INFO] 5 [CJOIN] node joined
+2019-03-08 14:11:07,973 [ParserInfoErrorCritical:INFO] 5 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:11:34,850 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 3072
+2019-03-08 14:11:34,954 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:11:34,956 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:11:38,249 [ParserInfoErrorCritical:INFO] 5 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:15:05,374 [ParserInfoErrorCritical:ERROR] 4 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 771
+2019-03-08 14:15:05,469 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:15:05,472 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:15:47,291 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 515
+2019-03-08 14:15:47,388 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:15:47,391 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:15:59,913 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 515
+2019-03-08 14:16:00,000 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:16:00,003 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:16:40,436 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 14:16:40,438 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 14:23:15,302 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:23:15,302 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:23:15,302 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:23:15,302 [RPL:INFO] create instance
+2019-03-08 14:23:15,303 [JRC:INFO] create instance
+2019-03-08 14:23:15,358 [SimEngine:INFO] starting
+2019-03-08 14:23:15,363 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:23:15,364 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:23:15,365 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:23:15,366 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:23:15,367 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:23:15,368 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:23:15,369 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:23:15,370 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:23:15,370 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:23:15,371 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:23:15,399 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,400 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,401 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,426 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,426 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,427 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,439 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,440 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,440 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,447 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,447 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,448 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,453 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,453 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,453 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:23:15,501 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:23:15,501 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:23:15,543 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:23:15,546 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:23:15,547 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:23:15,548 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:23:15,549 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:23:15,550 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:23:15,551 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:23:15,553 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:23:15,554 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 14:23:21,449 [openVisualizerWeb:INFO] Toggle root status for moteid 0001
+2019-03-08 14:23:21,456 [ParserInfoErrorCritical:ERROR] 1 [IEEE802154E] wrong state 1 in startSlot, at slotOffset 1
+2019-03-08 14:23:21,459 [RPL:INFO] registering DAGroot 14-15-92-cc-00-00-00-01
+2019-03-08 14:23:22,980 [ParserInfoErrorCritical:INFO] 3 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:23:25,577 [JRC:INFO] Node 141592cc00000003 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:23:25,717 [ParserInfoErrorCritical:INFO] 3 [CJOIN] node joined
+2019-03-08 14:23:26,436 [ParserInfoErrorCritical:INFO] 3 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:23:37,833 [ParserInfoErrorCritical:INFO] 2 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:23:39,955 [JRC:INFO] Node 141592cc00000002 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:23:40,100 [ParserInfoErrorCritical:INFO] 2 [CJOIN] node joined
+2019-03-08 14:23:40,768 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:23:44,550 [ParserInfoErrorCritical:INFO] 4 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:23:48,005 [ParserInfoErrorCritical:INFO] 5 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 14:23:48,518 [JRC:INFO] Node 141592cc00000004 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:23:48,678 [ParserInfoErrorCritical:INFO] 4 [CJOIN] node joined
+2019-03-08 14:23:49,693 [ParserInfoErrorCritical:INFO] 4 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:23:52,635 [JRC:INFO] Node 141592cc00000005 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 14:23:52,761 [ParserInfoErrorCritical:INFO] 5 [CJOIN] node joined
+2019-03-08 14:23:54,041 [ParserInfoErrorCritical:INFO] 5 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:25:44,742 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 768
+2019-03-08 14:25:44,874 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:25:44,877 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:27:26,116 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 512
+2019-03-08 14:27:26,130 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:27:26,133 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:27:55,578 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 512
+2019-03-08 14:27:55,594 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:27:55,597 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:27:55,990 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:56,256 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:56,490 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:56,730 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:56,981 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:57,329 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:57,563 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:57,808 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:58,047 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:58,280 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:58,556 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:58,796 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:59,047 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:59,285 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:27:59,534 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SEQNUM_ERR at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:28:13,046 [ParserInfoErrorCritical:INFO] 3 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 14:28:16,262 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:16,362 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:16,370 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:16,455 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:16,636 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:16,819 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,006 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,137 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,262 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,392 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,565 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,706 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,826 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:17,877 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,3
+2019-03-08 14:28:17,971 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 1024 lower than current node rank 1280
+2019-03-08 14:28:18,018 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,4
+2019-03-08 14:28:18,156 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,5
+2019-03-08 14:28:38,544 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:38,585 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:38,688 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:38,819 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:38,943 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,072 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,204 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,338 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,463 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,606 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 768 lower than current node rank 1024
+2019-03-08 14:28:39,761 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,2
+2019-03-08 14:28:39,939 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,4
+2019-03-08 14:28:40,217 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,5
+2019-03-08 14:28:56,614 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 512
+2019-03-08 14:28:56,628 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:28:56,632 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:29:11,968 [ParserInfoErrorCritical:ERROR] 3 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 512
+2019-03-08 14:29:11,986 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 14:29:11,990 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 14:34:21,072 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 14:34:21,074 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 14:49:40,223 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:49:40,223 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:49:40,223 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:49:40,223 [RPL:INFO] create instance
+2019-03-08 14:49:40,224 [JRC:INFO] create instance
+2019-03-08 14:49:40,302 [SimEngine:INFO] starting
+2019-03-08 14:49:40,310 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:49:40,311 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:49:40,313 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:49:40,315 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:49:40,317 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:49:40,319 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:49:40,321 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:49:40,323 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:49:40,324 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:49:40,326 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:49:40,345 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,345 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,346 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,373 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,375 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,375 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,406 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,407 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,407 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,426 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,427 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,427 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,434 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,434 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,434 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:49:40,496 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:49:40,496 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:49:40,515 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:49:40,551 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:49:40,553 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:49:40,554 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:49:40,555 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:49:40,557 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:49:40,557 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:49:40,558 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:49:40,558 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 14:50:00,215 [eventBusClient:CRITICAL] ERROR could not call <bound method moteConnector._cmdToMote_handler of <openvisualizer.moteConnector.moteConnector.moteConnector object at 0x7f126c6af4d0>>, err=an integer is required
+2019-03-08 14:50:26,576 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 14:50:26,579 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 14:50:28,253 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:50:28,253 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:50:28,253 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:50:28,253 [RPL:INFO] create instance
+2019-03-08 14:50:28,253 [JRC:INFO] create instance
+2019-03-08 14:50:28,331 [SimEngine:INFO] starting
+2019-03-08 14:50:28,339 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:50:28,341 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:50:28,344 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:50:28,346 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:50:28,348 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:50:28,349 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:50:28,350 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:50:28,351 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:50:28,354 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:50:28,356 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:50:28,379 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,380 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,380 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,385 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,385 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,385 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,390 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,390 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,390 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,396 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,396 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,396 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,403 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,403 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,403 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:50:28,433 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:50:28,433 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:50:28,441 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:50:28,463 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:50:28,464 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:50:28,465 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:50:28,466 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:50:28,467 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:50:28,468 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:50:28,469 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:50:28,470 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 14:51:30,477 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 14:51:30,479 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 14:52:05,602 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:52:05,602 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:52:05,602 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:52:05,602 [RPL:INFO] create instance
+2019-03-08 14:52:05,603 [JRC:INFO] create instance
+2019-03-08 14:52:05,679 [SimEngine:INFO] starting
+2019-03-08 14:52:05,687 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:52:05,688 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:52:05,690 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:52:05,692 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:52:05,694 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:52:05,695 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:52:05,697 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:52:05,698 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:52:05,699 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:52:05,700 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:52:05,711 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,712 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,712 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,743 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,744 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,744 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,762 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,762 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,763 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,779 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,779 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,780 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,793 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,793 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,793 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:52:05,839 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:52:05,840 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:52:05,880 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:52:05,883 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:52:05,884 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:52:05,885 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:52:05,886 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:52:05,887 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:52:05,888 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:52:05,890 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:52:05,891 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 14:55:49,422 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 14:55:49,422 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 14:55:49,423 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 14:55:49,423 [RPL:INFO] create instance
+2019-03-08 14:55:49,424 [JRC:INFO] create instance
+2019-03-08 14:55:49,495 [SimEngine:INFO] starting
+2019-03-08 14:55:49,507 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 14:55:49,509 [MoteHandler_1:INFO] thread initialized
+2019-03-08 14:55:49,511 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 14:55:49,513 [MoteHandler_2:INFO] thread initialized
+2019-03-08 14:55:49,516 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 14:55:49,518 [MoteHandler_3:INFO] thread initialized
+2019-03-08 14:55:49,520 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 14:55:49,521 [MoteHandler_4:INFO] thread initialized
+2019-03-08 14:55:49,523 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 14:55:49,525 [MoteHandler_5:INFO] thread initialized
+2019-03-08 14:55:49,542 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,543 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,543 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,575 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,576 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,576 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,590 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,590 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,590 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,608 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,608 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,608 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,629 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,630 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,630 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 14:55:49,680 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 14:55:49,680 [MoteHandler_5:INFO] thread starting
+2019-03-08 14:55:49,682 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 14:55:49,727 [MoteHandler_4:INFO] thread starting
+2019-03-08 14:55:49,729 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 14:55:49,731 [MoteHandler_3:INFO] thread starting
+2019-03-08 14:55:49,732 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 14:55:49,733 [MoteHandler_2:INFO] thread starting
+2019-03-08 14:55:49,734 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 14:55:49,735 [MoteHandler_1:INFO] thread starting
+2019-03-08 14:55:49,735 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 15:01:36,777 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 15:01:36,777 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 15:01:36,777 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 15:01:36,778 [RPL:INFO] create instance
+2019-03-08 15:01:36,778 [JRC:INFO] create instance
+2019-03-08 15:01:36,850 [SimEngine:INFO] starting
+2019-03-08 15:01:36,858 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 15:01:36,860 [MoteHandler_1:INFO] thread initialized
+2019-03-08 15:01:36,862 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 15:01:36,864 [MoteHandler_2:INFO] thread initialized
+2019-03-08 15:01:36,866 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 15:01:36,868 [MoteHandler_3:INFO] thread initialized
+2019-03-08 15:01:36,870 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 15:01:36,872 [MoteHandler_4:INFO] thread initialized
+2019-03-08 15:01:36,875 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 15:01:36,876 [MoteHandler_5:INFO] thread initialized
+2019-03-08 15:01:36,900 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,901 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,901 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,930 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,931 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,931 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,953 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,954 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,955 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,979 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,980 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,980 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,999 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:36,999 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:37,000 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:01:37,051 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 15:01:37,051 [MoteHandler_5:INFO] thread starting
+2019-03-08 15:01:37,059 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 15:01:37,081 [MoteHandler_4:INFO] thread starting
+2019-03-08 15:01:37,084 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 15:01:37,085 [MoteHandler_3:INFO] thread starting
+2019-03-08 15:01:37,086 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 15:01:37,087 [MoteHandler_2:INFO] thread starting
+2019-03-08 15:01:37,088 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 15:01:37,089 [MoteHandler_1:INFO] thread starting
+2019-03-08 15:01:37,091 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 15:01:53,805 [eventBusClient:CRITICAL] ERROR could not call <bound method moteConnector._cmdToMote_handler of <openvisualizer.moteConnector.moteConnector.moteConnector object at 0x7f404e6044d0>>, err=an integer is required
+2019-03-08 15:10:36,404 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 15:10:36,414 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 15:10:51,628 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 15:10:51,628 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 15:10:51,628 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 15:10:51,628 [RPL:INFO] create instance
+2019-03-08 15:10:51,629 [JRC:INFO] create instance
+2019-03-08 15:10:51,709 [SimEngine:INFO] starting
+2019-03-08 15:10:51,715 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 15:10:51,717 [MoteHandler_1:INFO] thread initialized
+2019-03-08 15:10:51,720 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 15:10:51,721 [MoteHandler_2:INFO] thread initialized
+2019-03-08 15:10:51,724 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 15:10:51,727 [MoteHandler_3:INFO] thread initialized
+2019-03-08 15:10:51,730 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 15:10:51,732 [MoteHandler_4:INFO] thread initialized
+2019-03-08 15:10:51,733 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 15:10:51,735 [MoteHandler_5:INFO] thread initialized
+2019-03-08 15:10:51,761 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,761 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,762 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,793 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,794 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,794 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,815 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,815 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,816 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,838 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,838 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,838 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,860 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,860 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,861 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:10:51,964 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 15:10:51,965 [MoteHandler_5:INFO] thread starting
+2019-03-08 15:10:52,019 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 15:10:52,022 [MoteHandler_4:INFO] thread starting
+2019-03-08 15:10:52,023 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 15:10:52,024 [MoteHandler_3:INFO] thread starting
+2019-03-08 15:10:52,025 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 15:10:52,026 [MoteHandler_2:INFO] thread starting
+2019-03-08 15:10:52,027 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 15:10:52,028 [MoteHandler_1:INFO] thread starting
+2019-03-08 15:10:52,029 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 15:11:29,854 [openVisualizerApp:INFO] Closing OpenVisualizer
+2019-03-08 15:11:29,856 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+2019-03-08 15:11:31,788 [openVisualizerApp:INFO] Initializing OpenVisualizerApp with options:
+	appdir      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    sim         = True
+    simCount    = 5
+    trace       = False
+    debug       = False
+    testbedmotes= False
+    usePageZero = False
+2019-03-08 15:11:31,789 [openVisualizerApp:INFO] Using external dirs:
+	conf     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    data     = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+    log      = /home/niels/Desktop/openwsn-sdn/openvisualizer/build/runui
+2019-03-08 15:11:31,789 [openVisualizerApp:INFO] sys.path:
+	/home/niels/Desktop/openwsn-sdn/coap
+	/home/niels/Desktop/openwsn-sdn/openvisualizer/bin
+	/home/niels/Desktop/openwsn-sdn/openvisualizer
+	/usr/lib/python2.7
+	/usr/lib/python2.7/plat-x86_64-linux-gnu
+	/usr/lib/python2.7/lib-tk
+	/usr/lib/python2.7/lib-old
+	/usr/lib/python2.7/lib-dynload
+	/usr/local/lib/python2.7/dist-packages
+	/usr/local/lib/python2.7/dist-packages/openVisualizer-1.2.4-py2.7.egg
+	/usr/lib/python2.7/dist-packages
+	/usr/lib/python2.7/dist-packages/gtk-2.0
+	/usr/lib/python2.7/dist-packages/wx-3.0-gtk3
+2019-03-08 15:11:31,790 [RPL:INFO] create instance
+2019-03-08 15:11:31,791 [JRC:INFO] create instance
+2019-03-08 15:11:31,867 [SimEngine:INFO] starting
+2019-03-08 15:11:31,877 [BspRadio_1:DEBUG] state=STOPPED
+2019-03-08 15:11:31,879 [MoteHandler_1:INFO] thread initialized
+2019-03-08 15:11:31,882 [BspRadio_2:DEBUG] state=STOPPED
+2019-03-08 15:11:31,885 [MoteHandler_2:INFO] thread initialized
+2019-03-08 15:11:31,887 [BspRadio_3:DEBUG] state=STOPPED
+2019-03-08 15:11:31,888 [MoteHandler_3:INFO] thread initialized
+2019-03-08 15:11:31,889 [BspRadio_4:DEBUG] state=STOPPED
+2019-03-08 15:11:31,892 [MoteHandler_4:INFO] thread initialized
+2019-03-08 15:11:31,894 [BspRadio_5:DEBUG] state=STOPPED
+2019-03-08 15:11:31,897 [MoteHandler_5:INFO] thread initialized
+2019-03-08 15:11:31,924 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,924 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,925 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,946 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,946 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,946 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,966 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,966 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,966 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,986 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,986 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:31,986 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:32,008 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:32,010 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:32,011 [ParserInfoErrorCritical:INFO] create instance
+2019-03-08 15:11:32,097 [openVisualizerWeb:INFO] Creating OpenVisualizerWeb
+2019-03-08 15:11:32,098 [MoteHandler_5:INFO] thread starting
+2019-03-08 15:11:32,143 [ParserInfoErrorCritical:INFO] 5 [OPENWSN] booted
+2019-03-08 15:11:32,150 [MoteHandler_4:INFO] thread starting
+2019-03-08 15:11:32,151 [ParserInfoErrorCritical:INFO] 4 [OPENWSN] booted
+2019-03-08 15:11:32,152 [MoteHandler_3:INFO] thread starting
+2019-03-08 15:11:32,153 [ParserInfoErrorCritical:INFO] 3 [OPENWSN] booted
+2019-03-08 15:11:32,154 [MoteHandler_2:INFO] thread starting
+2019-03-08 15:11:32,154 [ParserInfoErrorCritical:INFO] 2 [OPENWSN] booted
+2019-03-08 15:11:32,155 [MoteHandler_1:INFO] thread starting
+2019-03-08 15:11:32,156 [ParserInfoErrorCritical:INFO] 1 [OPENWSN] booted
+2019-03-08 15:11:51,161 [openVisualizerWeb:INFO] Toggle root status for moteid 0001
+2019-03-08 15:11:51,182 [ParserInfoErrorCritical:ERROR] 1 [IEEE802154E] wrong state 1 in startSlot, at slotOffset 1
+2019-03-08 15:11:51,211 [RPL:INFO] registering DAGroot 14-15-92-cc-00-00-00-01
+2019-03-08 15:12:00,991 [ParserInfoErrorCritical:INFO] 2 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 15:12:03,158 [JRC:INFO] Node 141592cc00000002 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 15:12:03,420 [ParserInfoErrorCritical:INFO] 2 [CJOIN] node joined
+2019-03-08 15:12:04,821 [ParserInfoErrorCritical:INFO] 2 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 15:12:19,790 [ParserInfoErrorCritical:INFO] 5 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 15:12:24,660 [JRC:INFO] Node 141592cc00000005 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 15:12:24,799 [ParserInfoErrorCritical:INFO] 5 [CJOIN] node joined
+2019-03-08 15:12:26,064 [ParserInfoErrorCritical:INFO] 5 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 15:12:31,197 [ParserInfoErrorCritical:ERROR] 2 [FORWARDING] loop detected due to previous rank 256 lower than current node rank 512
+2019-03-08 15:12:31,318 [openLbr:ERROR] detected possible loop on upstream route from 187,187,0,0,0,0,0,0,20,21,146,204,0,0,0,1
+2019-03-08 15:12:31,321 [openLbr:ERROR] no source route to [187, 187, 0, 0, 0, 0, 0, 0, 20, 21, 146, 204, 0, 0, 0, 1]
+2019-03-08 15:12:35,937 [ParserInfoErrorCritical:INFO] 3 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 15:12:36,959 [JRC:INFO] Node 141592cc00000003 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 15:12:37,030 [ParserInfoErrorCritical:INFO] 3 [CJOIN] node joined
+2019-03-08 15:12:37,995 [ParserInfoErrorCritical:INFO] 3 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
+2019-03-08 15:12:49,545 [ParserInfoErrorCritical:INFO] 4 [IEEE802154E] synchronized at slotOffset 0
+2019-03-08 15:12:54,546 [JRC:INFO] Node 141592cc00000004 not found in joinedNodes. Instantiating new context based on the master secret.
+2019-03-08 15:12:54,608 [ParserInfoErrorCritical:INFO] 4 [CJOIN] node joined
+2019-03-08 15:12:57,358 [ParserInfoErrorCritical:INFO] 4 [SIXTOP] sixtop return code RC_SUCCESS at sixtop state WAIT_ADDRESPONSE
