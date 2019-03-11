@@ -167,25 +167,10 @@ class moteConnector(eventBusClient.eventBusClient):
                 self._sendToMoteProbe(
                     dataToSend = dataToSend,
                 )
+
             elif data['action'][0]==moteState.moteState.WHISPER_CHANGE_PARENT:
-                if len(data['action']) == 4:
-                    dataToSend = [
-                        OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER,
-                        int(data['action'][1]),
-                        int(data['action'][2])
-                    ]
-                    if int(data['action'][3]) > 255:
-                        print "Sending large rank, splitting into 2 bytes."
-                        dataToSend.append(int(int(data['action'][3]) & 0xff00) >> 8)
-                        dataToSend.append(int(int(data['action'][3]) & 0x00ff))
-                    else:
-                        dataToSend.append(int(data['action'][3]))
-                    print "Updating node: " + str(data['action'][1]) + " to rank: " + str(data['action'][3]) + \
-                          " for parent " + str(data['action'][2])
-                    print(dataToSend)
-                    self._sendToMoteProbe(dataToSend = dataToSend)
-                else:
-                    print "Not the correct amount of parameters (2)."
+                self._whisperSwitchParent(data)
+
             else:
                 raise SystemError('unexpected action={0}'.format(data['action']))
     
@@ -363,3 +348,37 @@ class moteConnector(eventBusClient.eventBusClient):
         except socket.error:
             log.error(err)
             pass
+
+    def _whisperSwitchParent(self,data):
+
+        if len(data['action']) == 4:
+            dataToSend = [
+                OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER,
+                int(data['action'][1]),
+                int(data['action'][2])
+            ]
+
+            destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, 0x00, int(data['action'][1])]
+
+            route = self._dispatchAndGetResult(
+                signal='getSourceRoute',
+                data=destination_eui,
+            )
+
+            dataToSend.append(int(route[-2][-1]))
+
+            # Parse the rank
+            if int(data['action'][3]) > 255:
+                dataToSend.append(int(int(data['action'][3]) & 0xff00) >> 8)
+                dataToSend.append(int(int(data['action'][3]) & 0x00ff))
+            else:
+                dataToSend.append(int(data['action'][3]))
+
+            print "Updating node: " + str(dataToSend[1]) + " to rank: " + str(data['action'][3]) + \
+                  " for parent " + str(dataToSend[2]) + " next hop from root: " + str(dataToSend[3])
+
+            self._sendToMoteProbe(dataToSend=dataToSend)
+
+        else:
+            print "Not the correct amount of parameters (2)."
+            return
