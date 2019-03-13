@@ -365,6 +365,10 @@ class moteConnector(eventBusClient.eventBusClient):
                 data=destination_eui,
             )
 
+            if len(route) == 0:
+                print "No next hop found. Abort."
+                return
+
             dataToSend.append(int(route[-2][-1]))
 
             # Parse the rank
@@ -377,6 +381,7 @@ class moteConnector(eventBusClient.eventBusClient):
             print "Updating node: " + str(dataToSend[1]) + " to rank: " + str(data['action'][3]) + \
                   " for parent " + str(dataToSend[2]) + " next hop from root: " + str(dataToSend[3])
 
+            print dataToSend
             self._sendToMoteProbe(dataToSend=dataToSend)
 
         else:
