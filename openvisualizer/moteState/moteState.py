@@ -431,7 +431,7 @@ class moteState(eventBusClient.eventBusClient):
     TRIGGER_DAGROOT     = 'DAGroot'
     SET_COMMAND         = 'imageCommand'
     
-    WHISPER_CHANGE_PARENT = 'changeparent'
+    WHISPER = 'whisper'
 
     # command for golgen image       name,             id length
     COMMAND_SET_EBPERIOD          = ['ebPeriod',       0, 1]

@@ -168,8 +168,8 @@ class moteConnector(eventBusClient.eventBusClient):
                     dataToSend = dataToSend,
                 )
 
-            elif data['action'][0]==moteState.moteState.WHISPER_CHANGE_PARENT:
-                self._whisperSwitchParent(data)
+            elif data['action'][0] == moteState.moteState.WHISPER:
+                self._whisperCommand(data)
 
             else:
                 raise SystemError('unexpected action={0}'.format(data['action']))
@@ -349,41 +349,50 @@ class moteConnector(eventBusClient.eventBusClient):
             log.error(err)
             pass
 
-    def _whisperSwitchParent(self,data):
+    def _whisperCommand(self,data):
 
-        if len(data['action']) == 4:
-            dataToSend = [
-                OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER,
-                int(data['action'][1]),
-                int(data['action'][2])
-            ]
+        command = data['action'][1:]
 
-            destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, 0x00, int(data['action'][1])]
+        if command[0] == "dio":
+            print "Fake dio command"
 
-            route = self._dispatchAndGetResult(
-                signal='getSourceRoute',
-                data=destination_eui,
-            )
+            # Initialize data to send + indicate fake dio command
+            dataToSend = [OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER, 0x01]
 
+            # target id (16b, so split in 2 bytes)
+            target_id = [0x0, 0x0]
+            target_id[0] = (int(command[1], 16) & 0xff00) >> 8
+            target_id[1]  = int(command[1], 16) & 0x00ff
+            [dataToSend.append(i) for i in target_id]
+
+            # parent id (16b, so split in 2 bytes)
+            parent_id = [0x0, 0x0]
+            parent_id[0] = (int(command[2], 16) & 0xff00) >> 8
+            parent_id[1] = int(command[2], 16) & 0x00ff
+            [dataToSend.append(i) for i in parent_id]
+
+            # Get next hop from dagroot (using source route)
+            #destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
+            destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
+
+            route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
             if len(route) == 0:
                 print "No next hop found. Abort."
                 return
 
-            dataToSend.append(int(route[-2][-1]))
+            # next hop id (16b, so split in 2 bytes)
+            next_hop = [0x0, 0x0]
+            next_hop[0] = int(route[-2][-2])
+            next_hop[1] = int(route[-2][-1])
+            [dataToSend.append(i) for i in next_hop]
 
-            # Parse the rank
-            if int(data['action'][3]) > 255:
-                dataToSend.append(int(int(data['action'][3]) & 0xff00) >> 8)
-                dataToSend.append(int(int(data['action'][3]) & 0x00ff))
-            else:
-                dataToSend.append(int(data['action'][3]))
+            # Split rank in 2 bytes
+            rank = [0x0, 0x0]
+            rank[0] = (int(command[3]) & 0xff00) >> 8
+            rank[1] = int(command[3]) & 0x00ff
+            [dataToSend.append(i) for i in rank]
 
-            print "Updating node: " + str(dataToSend[1]) + " to rank: " + str(data['action'][3]) + \
-                  " for parent " + str(dataToSend[2]) + " next hop from root: " + str(dataToSend[3])
-
-            print dataToSend
             self._sendToMoteProbe(dataToSend=dataToSend)
-
         else:
-            print "Not the correct amount of parameters (2)."
+            print "Not the correct parameters."
             return

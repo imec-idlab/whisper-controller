@@ -485,27 +485,28 @@ class OpenVisualizerWeb(eventBusClient.eventBusClient,Cmd):
     
     def do_whisper(self, arg):
         """
-        Perform whisper parent switch
+        Whisper commands
         """
-        if not arg:
-            self.stdout.write('Available ports:')
-            if self.app.moteStates:
-                for ms in self.app.moteStates:
-                    self.stdout.write('  {0}'.format(ms.moteConnector.serialport))
-            else:
-                self.stdout.write('  <none>')
-            self.stdout.write('\n')
-        else:
-            try:
-                [port,target,new_parent,rank] = arg.split(' ')
-                for ms in self.app.moteStates:
+        found_dagroot = False
+        if self.app.moteStates:
+            for ms in self.app.moteStates:
+                if ms.state['IdManager'].isDAGroot:
+                    self.stdout.write('Sending command to {0}\n'.format(ms.moteConnector.serialport))
+                    found_dagroot = True
                     try:
-                        if ms.moteConnector.serialport==port:
-                            ms.triggerAction([moteState.moteState.WHISPER_CHANGE_PARENT,target,new_parent,rank])
+                        command_params = arg.split(' ')
+                        try:
+                            command = [moteState.moteState.WHISPER]
+                            [command.append(i) for i in command_params[0:]]
+                            ms.triggerAction(command)
+                        except ValueError as err:
+                            self.stdout.write(str(err))
                     except ValueError as err:
-                        self.stdout("Invalid whisper command: whisper <mote> <target_id> <parent_id> <new_rank>")
-            except ValueError as err:
-                print "{0}:{1}".format(type(err),err)
+                        print "{0}:{1}".format(type(err),err)
+
+            if not found_dagroot: self.stdout.write("No DAGroot found.\n")
+        else:
+            self.stdout.write("Something went wrong.\n")
     
     def do_state(self, arg):
         """
