@@ -21,10 +21,19 @@ class ParserWhisper(Parser.Parser):
         if input[0] == 0x01:
             print "Recieved whisper data frame"
 
-            data = input[1:-1]
-            char_data = []
-            [char_data.append(chr(data[i])) for i in range(0, len(data))]
+            command = input[1]
 
-            print ''.join(char_data)
+            if command == 0x01:
+                # Whisper fake dio from root command
+                if input[2] == 0:
+                    print "Fake DIO succeeded"
+                else:
+                    print "Fake DIO failed"
+            else:
+                data = input[1:-1]
+                char_data = []
+                [char_data.append(chr(data[i])) for i in range(0, len(data))]
+
+                print ''.join(char_data)
 
         return ('error', input)
