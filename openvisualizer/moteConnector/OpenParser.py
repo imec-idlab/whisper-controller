@@ -15,6 +15,7 @@ import ParserInfoErrorCritical as ParserIEC
 import ParserData
 import ParserPacket
 import ParserPrintf
+import ParserWhisper
 
 class OpenParser(Parser.Parser):
     
@@ -27,12 +28,13 @@ class OpenParser(Parser.Parser):
     SERFRAME_MOTE2PC_CRITICAL          = ParserIEC.ParserInfoErrorCritical.SEVERITY_CRITICAL
     SERFRAME_MOTE2PC_SNIFFED_PACKET    = ord('P')
     SERFRAME_MOTE2PC_PRINTF            = ord('F')
-    SERFRAME_MOTE2PC_WHISPER           = ord('W')
+    SERFRAME_MOTE2PC_WHISPER           = ord('X')
 
     SERFRAME_PC2MOTE_SETDAGROOT        = ord('R')
     SERFRAME_PC2MOTE_DATA              = ord('D')
     SERFRAME_PC2MOTE_TRIGGERSERIALECHO = ord('S')
     SERFRAME_PC2MOTE_COMMAND           = ord('C')
+    SERFRAME_PC2MOTE_WHISPER           = ord('W')
     
     SERFRAME_ACTION_YES                = ord('Y')
     SERFRAME_ACTION_NO                 = ord('N')
@@ -54,6 +56,7 @@ class OpenParser(Parser.Parser):
         self.parserData      = ParserData.ParserData()
         self.parserPacket    = ParserPacket.ParserPacket()
         self.parserPrintf    = ParserPrintf.ParserPrintf()
+        self.parserWhisper   = ParserWhisper.ParserWhisper()
 
         # register subparsers
         self._addSubParser(
@@ -90,6 +93,11 @@ class OpenParser(Parser.Parser):
             index  = 0,
             val    = self.SERFRAME_MOTE2PC_PRINTF,
             parser = self.parserPrintf.parseInput,
+        )
+        self._addSubParser(
+            index=0,
+            val=self.SERFRAME_MOTE2PC_WHISPER,
+            parser=self.parserWhisper.parseInput,
         )
 
     #======================== public ==========================================

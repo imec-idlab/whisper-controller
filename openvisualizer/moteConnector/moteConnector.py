@@ -357,7 +357,7 @@ class moteConnector(eventBusClient.eventBusClient):
             print "Fake dio command"
 
             # Initialize data to send + indicate fake dio command
-            dataToSend = [OpenParser.OpenParser.SERFRAME_MOTE2PC_WHISPER, 0x01]
+            dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x01]
 
             # target id (16b, so split in 2 bytes)
             target_id = [0x0, 0x0]
@@ -372,8 +372,8 @@ class moteConnector(eventBusClient.eventBusClient):
             [dataToSend.append(i) for i in parent_id]
 
             # Get next hop from dagroot (using source route)
-            #destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
-            destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
+            destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
+            #destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
 
             route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
             if len(route) == 0:
