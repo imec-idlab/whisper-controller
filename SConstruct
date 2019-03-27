@@ -113,6 +113,10 @@ env['ROOT_BUILD_DIR'] = os.path.join(os.getcwd(), 'build')
 # easy to change since it depends on the host running this script.
 env['FW_DIR']         = os.path.join('..', 'openwsn-fw')
 
+# Add whisper root and whiser node path to the env
+env['FW_DIR_WHISPER_ROOT']         = os.path.join('..', 'openwsn-fw-root')
+env['FW_DIR_WHISPER_NODE']         = os.path.join('..', 'openwsn-fw-node')
+
 def default(env,target,source): 
     print SCons.Script.help_text
     

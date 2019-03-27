@@ -84,14 +84,36 @@ class OpenVisualizerApp(object):
         if self.simulatorMode:
             # in "simulator" mode, motes are emulated
             sys.path.append(os.path.join(self.datadir, 'sim_files'))
-            import oos_openwsn
-            
-            MoteHandler.readNotifIds(os.path.join(self.datadir, 'sim_files', 'openwsnmodule_obj.h'))
+            import openwsn.oos_openwsn
+            import whisper_node.oos_openwsn
+            import whisper_root.oos_openwsn
+
             self.moteProbes       = []
-            for _ in range(self.numMotes):
-                moteHandler       = MoteHandler.MoteHandler(oos_openwsn.OpenMote())
-                self.simengine.indicateNewMote(moteHandler)
-                self.moteProbes  += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+            for i in range(self.numMotes):
+                if i == 0:
+                    # Start a whisper root node
+                    MoteHandler.readNotifIds(
+                        os.path.join(self.datadir, 'sim_files', 'whisper_root', 'openwsnmodule_obj.h'))
+                    moteHandler = MoteHandler.MoteHandler(whisper_root.oos_openwsn.OpenMote())
+                    self.simengine.indicateNewMote(moteHandler)
+                    self.moteProbes += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+                    print "Started a whisper root node"
+                elif i == 3:
+                    # Start a whisper node
+                    MoteHandler.readNotifIds(
+                        os.path.join(self.datadir, 'sim_files', 'whisper_node', 'openwsnmodule_obj.h'))
+                    moteHandler = MoteHandler.MoteHandler(whisper_node.oos_openwsn.OpenMote())
+                    self.simengine.indicateNewMote(moteHandler)
+                    self.moteProbes += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+                    print "Started a whisper node"
+                else:
+                    # Start a normal openwsn node
+                    MoteHandler.readNotifIds(
+                        os.path.join(self.datadir, 'sim_files', 'openwsn', 'openwsnmodule_obj.h'))
+                    moteHandler = MoteHandler.MoteHandler(openwsn.oos_openwsn.OpenMote())
+                    self.simengine.indicateNewMote(moteHandler)
+                    self.moteProbes += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+                    print "Started an openwsn node"
         elif self.iotlabmotes:
             # in "IoT-LAB" mode, motes are connected to TCP ports
             

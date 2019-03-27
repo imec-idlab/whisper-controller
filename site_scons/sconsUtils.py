@@ -22,37 +22,43 @@ def copySimfw(env, target):
     :param target: Provides a unique pseudo-target for the Command to perform 
                    the copy.
     '''
-    # in openwsn-fw, directory containing 'openwsnmodule_obj.h'
-    incdir    = os.path.join(env['FW_DIR'],'bsp','boards','python')
-    # in openwsn-fw, directory containing extension library
-    libdir    = os.path.join(env['FW_DIR'],'build','python_gcc','projects','common')
-
-    # Build source and destination pathnames.
-    archAndOs = env['SIMHOSTOPT'].split('-')
-    libext    = 'pyd' if archAndOs[1]=='windows' else 'so'
-    srcname   = 'oos_openwsn.{0}'.format(libext)
-    destname  = 'oos_openwsn-{0}.{1}'.format(archAndOs[0], libext)
-    simdir    = os.path.join('bin', 'sim_files')
-    destdir   = os.path.join(simdir, archAndOs[1])
-    
-    cmdlist   = [
-        Copy(simdir, os.path.join(incdir, 'openwsnmodule_obj.h')),
-        Mkdir(os.path.join(destdir)),
-        Copy(os.path.join(destdir, destname), os.path.join(libdir, srcname)),
+    source_folders = [
+        (env['FW_DIR'], 'openwsn'),
+        (env['FW_DIR_WHISPER_NODE'], 'whisper_node'),
+        (env['FW_DIR_WHISPER_ROOT'], 'whisper_root'),
     ]
-                
-    # Copy the module directly to sim_files directory if it matches this host.
-    if archAndOs[0] == 'amd64':
-        archMatch = platform.architecture()[0]=='64bit'
-    else:
-        archMatch = platform.architecture()[0]=='32bit'
-    if archAndOs[1] == 'windows':
-        osMatch = os.name=='nt'
-    else:
-        osMatch = os.name=='posix'
 
-    if archMatch and osMatch:
-        cmdlist.append( Copy(simdir, os.path.join(libdir, srcname)) )
+    cmdlist = []
+    for source in source_folders:
+        # in openwsn-fw, directory containing 'openwsnmodule_obj.h'
+        incdir    = os.path.join(source[0],'bsp','boards','python')
+        # in openwsn-fw, directory containing extension library
+        libdir    = os.path.join(source[0],'build','python_gcc','projects','common')
+
+        # Build source and destination pathnames.
+        archAndOs = env['SIMHOSTOPT'].split('-')
+        libext    = 'pyd' if archAndOs[1]=='windows' else 'so'
+        srcname   = 'oos_openwsn.{0}'.format(libext)
+        destname  = 'oos_openwsn-{0}.{1}'.format(archAndOs[0], libext)
+        simdir    = os.path.join('bin', 'sim_files', source[1])
+        destdir   = os.path.join(simdir, archAndOs[1])
+
+        cmdlist.append(Copy(simdir, os.path.join(incdir, 'openwsnmodule_obj.h')))
+        cmdlist.append(Mkdir(os.path.join(destdir)))
+        cmdlist.append(Copy(os.path.join(destdir, destname), os.path.join(libdir, srcname)))
+
+        # Copy the module directly to sim_files directory if it matches this host.
+        if archAndOs[0] == 'amd64':
+            archMatch = platform.architecture()[0]=='64bit'
+        else:
+            archMatch = platform.architecture()[0]=='32bit'
+        if archAndOs[1] == 'windows':
+            osMatch = os.name=='nt'
+        else:
+            osMatch = os.name=='posix'
+
+        if archMatch and osMatch:
+            cmdlist.append(Copy(simdir, os.path.join(libdir, srcname)))
     
     return env.Command(target, '', cmdlist)
         
