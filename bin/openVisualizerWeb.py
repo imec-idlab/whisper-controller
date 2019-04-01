@@ -496,9 +496,9 @@ class OpenVisualizerWeb(eventBusClient.eventBusClient,Cmd):
                     try:
                         command_params = arg.split(' ')
                         try:
-                            command = [moteState.moteState.WHISPER]
+                            command = []
                             [command.append(i) for i in command_params[0:]]
-                            ms.triggerAction(command)
+                            self.app.whisperController.parse(command, ms.moteConnector.serialport)
                         except ValueError as err:
                             self.stdout.write(str(err))
                     except ValueError as err:

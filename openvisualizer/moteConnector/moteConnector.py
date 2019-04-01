@@ -20,8 +20,6 @@ from pydispatch import dispatcher
 from openvisualizer.eventBus      import eventBusClient
 from openvisualizer.moteState     import moteState
 
-from openvisualizer.whisperController import CommandParser
-
 import OpenParser
 import ParserException
 
@@ -64,9 +62,6 @@ class moteConnector(eventBusClient.eventBusClient):
 
         self.moteProbe.sendToParser     = self._sendToParser
         self.receivedStatus_notif       = None
-
-        # Whisper command parser
-        self.whisper_command_parser = CommandParser.CommandParser()
         
     def _sendToParser(self,data):
         
@@ -172,9 +167,6 @@ class moteConnector(eventBusClient.eventBusClient):
                 self._sendToMoteProbe(
                     dataToSend = dataToSend,
                 )
-
-            elif data['action'][0] == moteState.moteState.WHISPER:
-                self.whisper_command_parser.parse(data, self._sendToMoteProbe)
 
             else:
                 raise SystemError('unexpected action={0}'.format(data['action']))

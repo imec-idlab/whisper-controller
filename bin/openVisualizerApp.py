@@ -30,6 +30,8 @@ from openvisualizer.RPL             import topology
 from openvisualizer                 import appdirs
 from openvisualizer.remoteConnectorServer   import remoteConnectorServer
 
+from openvisualizer.whisperController import WhisperController
+
 import openvisualizer.openvisualizer_utils as u
     
 class OpenVisualizerApp(object):
@@ -60,6 +62,7 @@ class OpenVisualizerApp(object):
         self.jrc                  = JRC.JRC()
         self.topology             = topology.topology()
         self.DAGrootList          = []
+
         # create openTun call last since indicates prefix
         self.openTun              = openTun.create() 
         if self.simulatorMode:
@@ -149,6 +152,7 @@ class OpenVisualizerApp(object):
 
         self.remoteConnectorServer = remoteConnectorServer.remoteConnectorServer()
 
+        self.whisperController = WhisperController.WhisperController(self.openLbr)
 
         # boot all emulated motes, if applicable
         if self.simulatorMode:
