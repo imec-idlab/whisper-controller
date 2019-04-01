@@ -151,6 +151,9 @@ class OpenLbr(eventBusClient.eventBusClient):
         self.dagRootEui64         = None
         self.usePageZero          = usePageZero
 
+        # whisper
+        self.whisperController = None
+
         # initialize parent class
         eventBusClient.eventBusClient.__init__(
             self,
@@ -243,6 +246,14 @@ class OpenLbr(eventBusClient.eventBusClient):
                 lowpan['route'].pop() #remove last as this is me.
 
             lowpan['nextHop'] = lowpan['route'][len(lowpan['route'])-1] #get next hop as this has to be the destination address, this is the last element on the list
+
+            # Whisper, update ping route if link testing packet
+            if self.whisperController is not None:
+                if ipv6['next_header'] == self.IANA_ICMPv6 and self.whisperController.getOpenLbrCatchPing():
+                    # Change source route of ping request
+                    print "Changing ping request"
+                    lowpan = self.whisperController.updatePingRequest(lowpan)
+
             # turn dictionary of fields into raw bytes
             lowpan_bytes     = self.reassemble_lowpan(lowpan)
 
@@ -259,7 +270,6 @@ class OpenLbr(eventBusClient.eventBusClient):
                     ))
                 log.error(self._format_lowpan(lowpan,lowpan_bytes))
                 return
-            
 
             #print "output:"
             #print lowpan_bytes
@@ -1127,3 +1137,8 @@ class OpenLbr(eventBusClient.eventBusClient):
             index                += NUM_BYTES_PER_LINE
 
         return '\n'.join(output)
+
+#======= Whisper
+
+    def setWhisperController(self, whisper_controller):
+        self.whisperController = whisper_controller

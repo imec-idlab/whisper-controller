@@ -4,6 +4,7 @@ log.setLevel(logging.INFO)
 log.addHandler(logging.NullHandler())
 
 import threading
+import multiping
 from pydispatch import dispatcher
 
 from openvisualizer.moteConnector import OpenParser
@@ -12,13 +13,18 @@ from openvisualizer.eventBus      import eventBusClient
 
 class WhisperController(eventBusClient.eventBusClient):
 
-    def __init__(self, openLbr):
+    def __init__(self):
         # log
         log.info("creating whisper controller instance")
 
         self.stateLock = threading.Lock()
-        self.networkPrefix = None
-        self.openLbr = openLbr
+        self.eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, 0x00, 0x00]
+
+        self.linkTestVars = {
+            'openLbrCatchPing': False,
+            'ping_destination': 0x00,
+            'ping_route_stop': 0x00,          # required route stop before going to dest
+        }
 
         # give this thread a name
         self.name = 'whisper_controller'
@@ -67,8 +73,28 @@ class WhisperController(eventBusClient.eventBusClient):
                 self._sendToMoteProbe(serialport, dataToSend)
 
             elif command[0] == "link":
-                self.test_link()
+                self.linkTestVars['ping_destination'] = 0x04
+                self.linkTestVars['ping_route_stop'] = 0x03
+                self.linkTestVars['openLbrCatchPing'] = True
+                request = multiping.MultiPing(["bbbb::1415:92cc:0:4"]) # dest addr doesnt matter here
+                request.send()
 
+                res = request.receive(1) # 1 second timeout
+                if res[0]: print "Ping success."
+                else: print "Ping failed."
+
+                self.linkTestVars['ping_destination'] = 0x03
+                self.linkTestVars['ping_route_stop'] = 0x04
+                self.linkTestVars['openLbrCatchPing'] = True
+                request = multiping.MultiPing(["bbbb::1415:92cc:0:3"])  # dest addr doesnt matter here
+                request.send()
+
+                res = request.receive(1)  # 1 second timeout
+                if res[0]:
+                    print "Ping success."
+                else:
+                    print "Ping failed."
+                self.linkTestVars['openLbrCatchPing'] = False
             else:
                 print "Not the correct parameters."
                 return
@@ -76,28 +102,26 @@ class WhisperController(eventBusClient.eventBusClient):
         except Exception as e:
             print e.message
 
-    def test_link(self):
-        print "Testing link between 2 nodes"
+    def getOpenLbrCatchPing(self):
+        return self.linkTestVars['openLbrCatchPing']
 
-        packet = {
-            'tf': [],
-            'nh': [0x3A], # next header
-            'cid': [],
-            'hlim': [],
-            'src_addr': [0x00, 0x00, 0x00, 0x00, 0, 0, 0, 0x01],
-            'dst_addr': [0x14, 0x15, 0x92, 0xCC, 0, 0, 0, 0x04],
-            'payload': [0x80, 0x00, 0x40, 0x6c, 0x31, 0x90, 0x00, 0x00, 0xa0, 0x8c, 0xeb, 0x63, 0x8c, 0x28, 0xd7, 0x41]
-        }
+    def updatePingRequest(self, lowpan):
+        self.eui[7] = self.linkTestVars['ping_route_stop']
 
-        route = self._dispatchAndGetResult(signal='getSourceRoute', data=packet['dst_addr'])
-        route.pop() # last is root
-        packet['route'] = route
-        packet['nextHop'] = packet['route'][len(packet['route']) - 1]
+        # Get route to required stop
+        route = self._dispatchAndGetResult(signal='getSourceRoute', data=self.eui)
+        print route
+        route.pop()
 
-        self.dispatch(
-            signal='bytesToMesh',
-            data=(packet['nextHop'], self.openLbr.reassemble_lowpan(packet)),
-        )
+        dest_eui = self.eui[:]
+        dest_eui[7] = self.linkTestVars['ping_destination']
+        route.insert(0, dest_eui)
+
+        lowpan['route'] = route
+        lowpan['nextHop'] = route[-1]
+        print "New route: " + str(route)
+        self.linkTestVars['openLbrCatchPing'] = False
+        return lowpan
 
     def _sendToMoteProbe(self, serialport, dataToSend):
         dispatcher.send(

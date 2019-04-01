@@ -63,6 +63,9 @@ class OpenVisualizerApp(object):
         self.topology             = topology.topology()
         self.DAGrootList          = []
 
+        self.whisperController = WhisperController.WhisperController()
+        self.openLbr.setWhisperController(self.whisperController)
+
         # create openTun call last since indicates prefix
         self.openTun              = openTun.create() 
         if self.simulatorMode:
@@ -151,8 +154,6 @@ class OpenVisualizerApp(object):
         ]
 
         self.remoteConnectorServer = remoteConnectorServer.remoteConnectorServer()
-
-        self.whisperController = WhisperController.WhisperController(self.openLbr)
 
         # boot all emulated motes, if applicable
         if self.simulatorMode:
