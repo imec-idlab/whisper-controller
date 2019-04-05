@@ -53,16 +53,24 @@ class WhisperController(eventBusClient.eventBusClient):
                 destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
                 # destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
 
-                route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
-                if len(route) == 0:
-                    print "No next hop found. Abort."
-                    return
+                # Set next hop or target whisper node id
+                if len(command) > 3:
+                    # whisper node is specified
+                    whisper_id = [0x0, 0x0]
+                    whisper_id[0] = (int(command[4]) & 0xff00) >> 8
+                    whisper_id[1] = int(command[4]) & 0x00ff
+                    [dataToSend.append(i) for i in whisper_id]
+                else:
+                    route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
+                    if len(route) == 0:
+                        print "No next hop found. Abort."
+                        return
 
-                # next hop id (16b, so split in 2 bytes)
-                next_hop = [0x0, 0x0]
-                next_hop[0] = int(route[-2][-2])
-                next_hop[1] = int(route[-2][-1])
-                [dataToSend.append(i) for i in next_hop]
+                    # next hop id (16b, so split in 2 bytes)
+                    next_hop = [0x0, 0x0]
+                    next_hop[0] = int(route[-2][-2])
+                    next_hop[1] = int(route[-2][-1])
+                    [dataToSend.append(i) for i in next_hop]
 
                 # Split rank in 2 bytes
                 rank = [0x0, 0x0]
@@ -70,8 +78,10 @@ class WhisperController(eventBusClient.eventBusClient):
                 rank[1] = int(command[3]) & 0x00ff
                 [dataToSend.append(i) for i in rank]
 
-                self._sendToMoteProbe(serialport, dataToSend)
 
+
+
+                self._sendToMoteProbe(serialport, dataToSend)
             elif command[0] == "link":
                 self.linkTestVars['ping_destination'] = 0x04
                 self.linkTestVars['ping_route_stop'] = 0x03
@@ -95,6 +105,21 @@ class WhisperController(eventBusClient.eventBusClient):
                 else:
                     print "Ping failed."
                 self.linkTestVars['openLbrCatchPing'] = False
+
+            elif command[0] == "dis":
+                print "Sending fake dis"
+
+                # Initialize data to send + indicate fake dio command
+                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x03]
+
+                # target id (16b, so split in 2 bytes)
+                target_id = [0x0, 0x0]
+                target_id[0] = (int(command[1], 16) & 0xff00) >> 8
+                target_id[1] = int(command[1], 16) & 0x00ff
+                [dataToSend.append(i) for i in target_id]
+
+                self._sendToMoteProbe(serialport, dataToSend)
+
             else:
                 print "Not the correct parameters."
                 return
@@ -121,6 +146,10 @@ class WhisperController(eventBusClient.eventBusClient):
         lowpan['nextHop'] = route[-1]
         print "New route: " + str(route)
         self.linkTestVars['openLbrCatchPing'] = False
+
+        import json
+        print json.dumps(lowpan)
+
         return lowpan
 
     def _sendToMoteProbe(self, serialport, dataToSend):
