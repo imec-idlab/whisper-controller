@@ -10,6 +10,8 @@ from pydispatch import dispatcher
 from openvisualizer.moteConnector import OpenParser
 from openvisualizer.eventBus      import eventBusClient
 
+from coap import coap
+
 
 class WhisperController(eventBusClient.eventBusClient):
 
@@ -53,24 +55,16 @@ class WhisperController(eventBusClient.eventBusClient):
                 destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
                 # destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
 
-                # Set next hop or target whisper node id
-                if len(command) > 3:
-                    # whisper node is specified
-                    whisper_id = [0x0, 0x0]
-                    whisper_id[0] = (int(command[4]) & 0xff00) >> 8
-                    whisper_id[1] = int(command[4]) & 0x00ff
-                    [dataToSend.append(i) for i in whisper_id]
-                else:
-                    route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
-                    if len(route) == 0:
-                        print "No next hop found. Abort."
-                        return
+                route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
+                if len(route) == 0:
+                    print "No next hop found. Abort."
+                    return
 
-                    # next hop id (16b, so split in 2 bytes)
-                    next_hop = [0x0, 0x0]
-                    next_hop[0] = int(route[-2][-2])
-                    next_hop[1] = int(route[-2][-1])
-                    [dataToSend.append(i) for i in next_hop]
+                # next hop id (16b, so split in 2 bytes)
+                next_hop = [0x0, 0x0]
+                next_hop[0] = int(route[-2][-2])
+                next_hop[1] = int(route[-2][-1])
+                [dataToSend.append(i) for i in next_hop]
 
                 # Split rank in 2 bytes
                 rank = [0x0, 0x0]
@@ -78,10 +72,18 @@ class WhisperController(eventBusClient.eventBusClient):
                 rank[1] = int(command[3]) & 0x00ff
                 [dataToSend.append(i) for i in rank]
 
+                if len(command) > 4:
+                    MOTE_IP = 'bbbb::1415:92cc:0:4'
+                    UDPPORT = 61618  # can't be the port used in OV
 
+                    c = coap.coap(udpPort=UDPPORT)
 
+                    c.PUT('coap://[{0}]/w'.format(MOTE_IP), payload=dataToSend)
 
-                self._sendToMoteProbe(serialport, dataToSend)
+                    c.close()
+                else:
+                    self._sendToMoteProbe(serialport, dataToSend)
+
             elif command[0] == "link":
                 self.linkTestVars['ping_destination'] = 0x04
                 self.linkTestVars['ping_route_stop'] = 0x03
