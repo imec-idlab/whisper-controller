@@ -132,6 +132,34 @@ class WhisperController(eventBusClient.eventBusClient):
 
                 self._sendToMoteProbe(serialport, dataToSend)
 
+            elif command[0] == "6p":
+                print(command)
+                # Initialize data to send
+                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER]
+
+                if command[1] == "add":
+                    dataToSend.append(0x02) #indicate whisper 6p add request
+
+                    coap_target = self.eui[:]
+                    coap_target[6] = (int(command[2], 16) & 0xff00) >> 8
+                    coap_target[7] = int(command[2], 16) & 0x00ff
+
+                    # target id (16b, so split in 2 bytes)
+                    target_id = [0x0, 0x0]
+                    target_id[0] = (int(command[3], 16) & 0xff00) >> 8
+                    target_id[1] = int(command[3], 16) & 0x00ff
+                    [dataToSend.append(i) for i in target_id]
+
+                    mote_ip = "bbbb::"
+                    count = 1
+                    for byte in coap_target:
+                        mote_ip += "%02x" % byte
+                        if (count % 2) == 0:
+                            mote_ip += ":"
+                        count += 1
+
+                    print "Sending data:" + str(dataToSend) + " over CoAp"
+                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
             else:
                 print "Not the correct parameters."
                 return
