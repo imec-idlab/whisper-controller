@@ -28,6 +28,10 @@ class WhisperController(eventBusClient.eventBusClient):
             'ping_route_stop': 0x00,          # required route stop before going to dest
         }
 
+        # Open CoAP socket
+        UDPPORT = 61618
+        self.c = coap.coap(udpPort=UDPPORT)
+
         # give this thread a name
         self.name = 'whisper_controller'
 
@@ -52,8 +56,9 @@ class WhisperController(eventBusClient.eventBusClient):
                 [dataToSend.append(i) for i in parent_id]
 
                 # Get next hop from dagroot (using source route)
-                destination_eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, target_id[0], target_id[1]]
-                # destination_eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, target_id[0], target_id[1]]
+                destination_eui = self.eui[:]
+                destination_eui[6] = target_id[0]
+                destination_eui[7] = target_id[1]
 
                 route = self._dispatchAndGetResult(signal='getSourceRoute', data=destination_eui)
                 if len(route) == 0:
@@ -73,14 +78,19 @@ class WhisperController(eventBusClient.eventBusClient):
                 [dataToSend.append(i) for i in rank]
 
                 if len(command) > 4:
-                    MOTE_IP = 'bbbb::1415:92cc:0:4'
-                    UDPPORT = 61618  # can't be the port used in OV
+                    coap_target = self.eui[:]
+                    coap_target[6] = (int(command[4], 16) & 0xff00) >> 8
+                    coap_target[7] = int(command[4], 16) & 0x00ff
 
-                    c = coap.coap(udpPort=UDPPORT)
+                    mote_ip = "bbbb::"
+                    count = 1
+                    for byte in coap_target:
+                        mote_ip += "%02x" % byte
+                        if (count % 2) == 0:
+                            mote_ip += ":"
+                        count += 1
 
-                    c.PUT('coap://[{0}]/w'.format(MOTE_IP), payload=dataToSend)
-
-                    c.close()
+                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
                 else:
                     self._sendToMoteProbe(serialport, dataToSend)
 
@@ -137,7 +147,6 @@ class WhisperController(eventBusClient.eventBusClient):
 
         # Get route to required stop
         route = self._dispatchAndGetResult(signal='getSourceRoute', data=self.eui)
-        print route
         route.pop()
 
         dest_eui = self.eui[:]
@@ -146,11 +155,7 @@ class WhisperController(eventBusClient.eventBusClient):
 
         lowpan['route'] = route
         lowpan['nextHop'] = route[-1]
-        print "New route: " + str(route)
         self.linkTestVars['openLbrCatchPing'] = False
-
-        import json
-        print json.dumps(lowpan)
 
         return lowpan
 
@@ -160,6 +165,10 @@ class WhisperController(eventBusClient.eventBusClient):
             signal='fromMoteConnector@' + serialport,
             data=''.join([chr(c) for c in dataToSend])
         )
+
+    def __del__(self):
+        self.c.close()
+
 
 
 
