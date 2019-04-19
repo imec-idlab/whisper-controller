@@ -111,6 +111,12 @@ class WhisperController(eventBusClient.eventBusClient):
                     target_id[1] = int(command[3], 16) & 0x00ff
                     [dataToSend.append(i) for i in target_id]
 
+                    # target id (16b, so split in 2 bytes)
+                    source_id = [0x0, 0x0]
+                    source_id[0] = (int(command[4], 16) & 0xff00) >> 8
+                    source_id[1] = int(command[4], 16) & 0x00ff
+                    [dataToSend.append(i) for i in source_id]
+
                     mote_ip = "bbbb::"
                     count = 1
                     for byte in coap_target:
