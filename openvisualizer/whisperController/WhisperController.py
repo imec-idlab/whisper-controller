@@ -77,6 +77,8 @@ class WhisperController(eventBusClient.eventBusClient):
                 rank[1] = int(command[3]) & 0x00ff
                 [dataToSend.append(i) for i in rank]
 
+                print dataToSend
+
                 if len(command) > 4:
                     coap_target = self.eui[:]
                     coap_target[6] = (int(command[4], 16) & 0xff00) >> 8
@@ -243,20 +245,48 @@ class WhisperController(eventBusClient.eventBusClient):
                     self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
 
             elif command[0] == "link":
-                self.linkTestVars['ping_destination'] = 0x04
-                self.linkTestVars['ping_route_stop'] = 0x03
+                first = self.eui[:]
+                first[6] = (int(command[1], 16) & 0xff00) >> 8
+                first[7] = int(command[1], 16) & 0x00ff
+
+                first_mote_ip = "bbbb::"
+                count = 1
+                for byte in first:
+                    first_mote_ip += "%02x" % byte
+                    if (count % 2) == 0:
+                        first_mote_ip += ":"
+                    count += 1
+                first_mote_ip = first_mote_ip[0:-1]
+                first_id = [first[6], first[7]]
+
+                second = self.eui[:]
+                second[6] = (int(command[2], 16) & 0xff00) >> 8
+                second[7] = int(command[2], 16) & 0x00ff
+
+                second_mote_ip = "bbbb::"
+                count = 1
+                for byte in first:
+                    second_mote_ip += "%02x" % byte
+                    if (count % 2) == 0:
+                        second_mote_ip += ":"
+                    count += 1
+                second_mote_ip = second_mote_ip[0:-1]
+                second_id = [second[6], second[7]]
+
+                self.linkTestVars['ping_destination'] = first_id
+                self.linkTestVars['ping_route_stop'] = second_id
                 self.linkTestVars['openLbrCatchPing'] = True
-                request = multiping.MultiPing(["bbbb::1415:92cc:0:4"]) # dest addr doesnt matter here
+                request = multiping.MultiPing([first_mote_ip])
                 request.send()
 
                 res = request.receive(1) # 1 second timeout
                 if res[0]: print "Ping success."
                 else: print "Ping failed."
 
-                self.linkTestVars['ping_destination'] = 0x03
-                self.linkTestVars['ping_route_stop'] = 0x04
+                self.linkTestVars['ping_destination'] = second_id
+                self.linkTestVars['ping_route_stop'] = first_id
                 self.linkTestVars['openLbrCatchPing'] = True
-                request = multiping.MultiPing(["bbbb::1415:92cc:0:3"])  # dest addr doesnt matter here
+                request = multiping.MultiPing([second_mote_ip])
                 request.send()
 
                 res = request.receive(1)  # 1 second timeout
@@ -291,14 +321,16 @@ class WhisperController(eventBusClient.eventBusClient):
         return self.linkTestVars['openLbrCatchPing']
 
     def updatePingRequest(self, lowpan):
-        self.eui[7] = self.linkTestVars['ping_route_stop']
+        self.eui[6] = self.linkTestVars['ping_route_stop'][0]
+        self.eui[7] = self.linkTestVars['ping_route_stop'][1]
 
         # Get route to required stop
         route = self._dispatchAndGetResult(signal='getSourceRoute', data=self.eui)
         route.pop()
 
         dest_eui = self.eui[:]
-        dest_eui[7] = self.linkTestVars['ping_destination']
+        dest_eui[6] = self.linkTestVars['ping_destination'][0]
+        dest_eui[7] = self.linkTestVars['ping_destination'][1]
         route.insert(0, dest_eui)
 
         lowpan['route'] = route
