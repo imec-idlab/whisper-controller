@@ -105,17 +105,11 @@ class WhisperController(eventBusClient.eventBusClient):
                     command_parsed = True
                     dataToSend.append(0x01)  # indicate whisper 6p add request
 
-                    # target id (16b, so split in 2 bytes)
-                    target_id = [0x0, 0x0]
-                    target_id[0] = (int(command[2], 16) & 0xff00) >> 8
-                    target_id[1] = int(command[2], 16) & 0x00ff
-                    [dataToSend.append(i) for i in target_id]
+                    # add target
+                    [dataToSend.append(i) for i in self.splitBytes(command[2], "hex")]
 
-                    # target id (16b, so split in 2 bytes)
-                    source_id = [0x0, 0x0]
-                    source_id[0] = (int(command[3], 16) & 0xff00) >> 8
-                    source_id[1] = int(command[3], 16) & 0x00ff
-                    [dataToSend.append(i) for i in source_id]
+                    # add source
+                    [dataToSend.append(i) for i in self.splitBytes(command[3], "hex")]
 
                     if command[4] == "TX": dataToSend.append(0x01)
                     elif command[4] == "RX": dataToSend.append(0x02)
@@ -123,47 +117,47 @@ class WhisperController(eventBusClient.eventBusClient):
                         print("Not a valid cell type, aborted.")
                         return
 
-                    if len(command) > 6:
-                        dataToSend.append(0x01) # indicate a specified cell is comming
+                    if int(command[5]) <= 255:
+                        dataToSend.append(int(command[5]))
+                    else:
+                        print "Invalid seqNum, command aborted."
+                        return
 
-                        if 0 <= int(command[5]) <= 101:
-                            slotOffset = [0x0, 0x0]
-                            slotOffset[0] = (int(command[5]) & 0xff00) >> 8
-                            slotOffset[1] = int(command[5]) & 0x00ff
-                            [dataToSend.append(i) for i in slotOffset]
+                    if command[6] == "no_cell":
+                        dataToSend.append(0x00) # indicate a specified cell is comming
+
+                    elif command[6] == "cell":
+                        dataToSend.append(0x01)
+
+                        if 0 <= int(command[7]) <= 101:
+                            [dataToSend.append(i) for i in self.splitBytes(command[7])]
                         else:
                             print "Not a valid slot offset, aborted."
                             return
 
-                        if 0 <= int(command[6]) <= 15:
-                            channel = [0x0, 0x0]
-                            channel[0] = (int(command[6]) & 0xff00) >> 8
-                            channel[1] = int(command[6]) & 0x00ff
-                            [dataToSend.append(i) for i in channel]
+                        if 0 <= int(command[8]) <= 15:
+                            [dataToSend.append(i) for i in self.splitBytes(command[8])]
                         else:
                             print "Not a valid channel, aborted."
                             return
-
-                        print dataToSend
-
                     else:
                         dataToSend.append(0x02) # indicate random cell
 
                 elif command[1] == "delete":
+                    print "Not implemented"
+                    return
+                elif command[1] == "list":
                     command_parsed = True
-                    dataToSend.append(0x02)  # indicate whisper 6p add request
+                    dataToSend.append(0x05)  # indicate whisper 6p list request
 
-                    # target id (16b, so split in 2 bytes)
-                    target_id = [0x0, 0x0]
-                    target_id[0] = (int(command[2], 16) & 0xff00) >> 8
-                    target_id[1] = int(command[2], 16) & 0x00ff
-                    [dataToSend.append(i) for i in target_id]
+                    print "Not implemented"
+                    return
 
-                    # target id (16b, so split in 2 bytes)
-                    source_id = [0x0, 0x0]
-                    source_id[0] = (int(command[3], 16) & 0xff00) >> 8
-                    source_id[1] = int(command[3], 16) & 0x00ff
-                    [dataToSend.append(i) for i in source_id]
+                elif command[1] == "clear":
+                    command_parsed = True
+                    dataToSend.append(0x07)  # indicate whisper 6p list request
+                    [dataToSend.append(i) for i in self.splitBytes(command[2], "hex")]
+                    [dataToSend.append(i) for i in self.splitBytes(command[3], "hex")]
 
                     if command[4] == "TX": dataToSend.append(0x01)
                     elif command[4] == "RX": dataToSend.append(0x02)
@@ -171,63 +165,8 @@ class WhisperController(eventBusClient.eventBusClient):
                         print("Not a valid cell type, aborted.")
                         return
 
-                    if len(command) > 6:
-                        dataToSend.append(0x01) # indicate a specified cell is comming
-
-                        if 0 <= int(command[5]) <= 101:
-                            slotOffset = [0x0, 0x0]
-                            slotOffset[0] = (int(command[5]) & 0xff00) >> 8
-                            slotOffset[1] = int(command[5]) & 0x00ff
-                            [dataToSend.append(i) for i in slotOffset]
-                        else:
-                            print "Not a valid slot offset, aborted."
-                            return
-
-                        if 0 <= int(command[6]) <= 15:
-                            channel = [0x0, 0x0]
-                            channel[0] = (int(command[6]) & 0xff00) >> 8
-                            channel[1] = int(command[6]) & 0x00ff
-                            [dataToSend.append(i) for i in channel]
-                        else:
-                            print "Not a valid channel, aborted."
-                            return
-
-                        print dataToSend
-
-                    else:
-                        print "Random cell deletion not supported atm."
-
-                elif command[1] == "list":
-                    command_parsed = True
-                    dataToSend.append(0x05)  # indicate whisper 6p list request
-
-                    # target id (16b, so split in 2 bytes)
-                    target_id = [0x0, 0x0]
-                    target_id[0] = (int(command[2], 16) & 0xff00) >> 8
-                    target_id[1] = int(command[2], 16) & 0x00ff
-                    [dataToSend.append(i) for i in target_id]
-
-                    # target id (16b, so split in 2 bytes)
-                    source_id = [0x0, 0x0]
-                    source_id[0] = (int(command[3], 16) & 0xff00) >> 8
-                    source_id[1] = int(command[3], 16) & 0x00ff
-                    [dataToSend.append(i) for i in source_id]
-
-                elif command[1] == "clear":
-                    command_parsed = True
-                    dataToSend.append(0x07)  # indicate whisper 6p list request
-
-                    # target id (16b, so split in 2 bytes)
-                    target_id = [0x0, 0x0]
-                    target_id[0] = (int(command[2], 16) & 0xff00) >> 8
-                    target_id[1] = int(command[2], 16) & 0x00ff
-                    [dataToSend.append(i) for i in target_id]
-
-                    # target id (16b, so split in 2 bytes)
-                    source_id = [0x0, 0x0]
-                    source_id[0] = (int(command[3], 16) & 0xff00) >> 8
-                    source_id[1] = int(command[3], 16) & 0x00ff
-                    [dataToSend.append(i) for i in source_id]
+                else:
+                    print "Please specify a correct 6P command."
 
                 if command_parsed:
                     coap_target = self.eui[:]
@@ -283,19 +222,6 @@ class WhisperController(eventBusClient.eventBusClient):
                 if res[0]: print "Ping success."
                 else: print "Ping failed."
 
-                self.linkTestVars['ping_destination'] = second_id
-                self.linkTestVars['ping_route_stop'] = first_id
-                self.linkTestVars['openLbrCatchPing'] = True
-                request = multiping.MultiPing([second_mote_ip])
-                request.send()
-
-                res = request.receive(1)  # 1 second timeout
-                if res[0]:
-                    print "Ping success."
-                else:
-                    print "Ping failed."
-                self.linkTestVars['openLbrCatchPing'] = False
-
             elif command[0] == "dis":
                 print "Sending fake dis"
 
@@ -316,6 +242,17 @@ class WhisperController(eventBusClient.eventBusClient):
 
         except Exception as e:
             print e.message
+
+    def splitBytes(self, number, mode="dec"):
+        bytes = [0x0, 0x0]
+        if mode == "hex":
+            bytes[0] = (int(number, 16) & 0xff00) >> 8
+            bytes[1] = int(number, 16) & 0x00ff
+        else:
+            bytes[0] = (int(number) & 0xff00) >> 8
+            bytes[1] = int(number) & 0x00ff
+        return bytes
+
 
     def getOpenLbrCatchPing(self):
         return self.linkTestVars['openLbrCatchPing']
