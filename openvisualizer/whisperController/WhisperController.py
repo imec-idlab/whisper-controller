@@ -193,9 +193,27 @@ class WhisperController(eventBusClient.eventBusClient):
                 elif command[1] == "list":
                     command_parsed = True
                     dataToSend.append(0x05)  # indicate whisper 6p list request
+                    [dataToSend.append(i) for i in self.splitBytes(command[2], "hex")]
+                    [dataToSend.append(i) for i in self.splitBytes(command[3], "hex")]
 
-                    print "Not implemented"
-                    return
+                    if command[4] == "TX":
+                        dataToSend.append(0x01)
+                    elif command[4] == "RX":
+                        dataToSend.append(0x02)
+                    elif command[4] == "TXRX":
+                        dataToSend.append(0x04)
+                    else:
+                        print("Not a valid cell type, aborted.")
+                        return
+
+                    if int(command[5]) <= 255:
+                        dataToSend.append(int(command[5]))
+                    else:
+                        print "Invalid seqNum, command aborted."
+                        return
+
+                    [dataToSend.append(i) for i in self.splitBytes(command[6])] # max nr of cells
+                    [dataToSend.append(i) for i in self.splitBytes(command[7])] # listing offset
 
                 elif command[1] == "clear":
                     command_parsed = True
