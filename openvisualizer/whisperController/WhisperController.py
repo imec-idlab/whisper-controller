@@ -113,6 +113,7 @@ class WhisperController(eventBusClient.eventBusClient):
 
                     if command[4] == "TX": dataToSend.append(0x01)
                     elif command[4] == "RX": dataToSend.append(0x02)
+                    elif command[4] == "TXRX": dataToSend.append(0x04)
                     else:
                         print("Not a valid cell type, aborted.")
                         return
@@ -144,8 +145,51 @@ class WhisperController(eventBusClient.eventBusClient):
                         dataToSend.append(0x02) # indicate random cell
 
                 elif command[1] == "delete":
-                    print "Not implemented"
-                    return
+                    command_parsed = True
+                    dataToSend.append(0x02)  # indicate whisper 6p add request
+
+                    # add target
+                    [dataToSend.append(i) for i in self.splitBytes(command[2], "hex")]
+
+                    # add source
+                    [dataToSend.append(i) for i in self.splitBytes(command[3], "hex")]
+
+                    if command[4] == "TX":
+                        dataToSend.append(0x01)
+                    elif command[4] == "RX":
+                        dataToSend.append(0x02)
+                    elif command[4] == "TXRX":
+                        dataToSend.append(0x04)
+                    else:
+                        print("Not a valid cell type, aborted.")
+                        return
+
+                    if int(command[5]) <= 255:
+                        dataToSend.append(int(command[5]))
+                    else:
+                        print "Invalid seqNum, command aborted."
+                        return
+
+                    if command[6] == "no_cell":
+                        dataToSend.append(0x00)  # indicate a specified cell is comming
+
+                    elif command[6] == "cell":
+                        dataToSend.append(0x01)
+
+                        if 0 <= int(command[7]) <= 101:
+                            [dataToSend.append(i) for i in self.splitBytes(command[7])]
+                        else:
+                            print "Not a valid slot offset, aborted."
+                            return
+
+                        if 0 <= int(command[8]) <= 15:
+                            [dataToSend.append(i) for i in self.splitBytes(command[8])]
+                        else:
+                            print "Not a valid channel, aborted."
+                            return
+                    else:
+                        dataToSend.append(0x02)  # indicate random cell
+
                 elif command[1] == "list":
                     command_parsed = True
                     dataToSend.append(0x05)  # indicate whisper 6p list request
@@ -158,13 +202,7 @@ class WhisperController(eventBusClient.eventBusClient):
                     dataToSend.append(0x07)  # indicate whisper 6p list request
                     [dataToSend.append(i) for i in self.splitBytes(command[2], "hex")]
                     [dataToSend.append(i) for i in self.splitBytes(command[3], "hex")]
-
-                    if command[4] == "TX": dataToSend.append(0x01)
-                    elif command[4] == "RX": dataToSend.append(0x02)
-                    else:
-                        print("Not a valid cell type, aborted.")
-                        return
-
+                    dataToSend.append(0x01)  # send celloption 0x01 (TX) does not matter
                 else:
                     print "Please specify a correct 6P command."
 
