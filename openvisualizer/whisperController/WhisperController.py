@@ -237,7 +237,7 @@ class WhisperController(eventBusClient.eventBusClient):
                             mote_ip += ":"
                         count += 1
 
-                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
+                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1], confirmable=False), payload=dataToSend)
 
             elif command[0] == "link":
                 first = self.eui[:]
