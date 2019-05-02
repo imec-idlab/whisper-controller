@@ -29,7 +29,8 @@ class WhisperController(eventBusClient.eventBusClient):
         }
 
         # Open CoAP socket
-        self.UDPPORT = 61618
+        UDPPORT = 61618
+        self.c = coap.coap(udpPort=UDPPORT)
 
         # give this thread a name
         self.name = 'whisper_controller'
@@ -91,7 +92,7 @@ class WhisperController(eventBusClient.eventBusClient):
                             mote_ip += ":"
                         count += 1
 
-                    self.sendCommand(format(mote_ip[0:-1]), dataToSend)
+                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
                 else:
                     self._sendToMoteProbe(serialport, dataToSend)
 
@@ -236,10 +237,7 @@ class WhisperController(eventBusClient.eventBusClient):
                             mote_ip += ":"
                         count += 1
 
-                    try:
-                        self.sendCommand(format(mote_ip[0:-1]), dataToSend)
-                    except Exception:
-                        print "Exception occured during sending command."
+                    self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1], confirmable=False), payload=dataToSend)
 
             elif command[0] == "link":
                 first = self.eui[:]
@@ -334,16 +332,16 @@ class WhisperController(eventBusClient.eventBusClient):
 
         return lowpan
 
-    def sendCommand(self, mote_ip, dataToSend):
-        self.c = coap.coap(udpPort=self.UDPPORT)
-        data = self.c.PUT('coap://[{0}]/w'.format(mote_ip[0:-1]), payload=dataToSend)
-        print(data)
-        self.c.close()
-        return
-
     def _sendToMoteProbe(self, serialport, dataToSend):
         dispatcher.send(
             sender=self.name,
             signal='fromMoteConnector@' + serialport,
             data=''.join([chr(c) for c in dataToSend])
         )
+
+    def __del__(self):
+        self.c.close()
+
+
+
+
