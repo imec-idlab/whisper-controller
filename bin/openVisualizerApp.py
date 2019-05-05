@@ -64,7 +64,7 @@ class OpenVisualizerApp(object):
         self.DAGrootList          = []
 
         self.whisperController = WhisperController.WhisperController()
-        self.openLbr.setWhisperController(self.whisperController)
+        self.openLbr.setWhisperController(self.whisperController.getLinkTester())
 
         # create openTun call last since indicates prefix
         self.openTun              = openTun.create() 
