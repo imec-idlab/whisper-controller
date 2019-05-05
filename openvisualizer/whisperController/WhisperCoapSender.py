@@ -24,6 +24,7 @@ class WhisperCoapSender(threading.Thread):
 
     def join(self, timeout=0):
         self.running = False
+        self.socket.close()
         super(WhisperCoapSender, self).join(timeout)
 
     def mote_id_to_address(self, mote_id):
@@ -39,4 +40,4 @@ class WhisperCoapSender(threading.Thread):
                 mote_ip += ":"
             count += 1
 
-        return address[0:-1]
+        return mote_ip[0:-1]

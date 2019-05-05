@@ -1,17 +1,24 @@
-
+import time
 from coap import coap, coapResource, coapDefines
 
 
-class WhisperCoapReceiver(coapResource.coapResource):
+class WhisperCoapReceiver():
 
     def __init__(self, path):
-        super(WhisperCoapReceiver, self).__init__(path)
-        self.UDP_PORT = 61620
+        self.socket = coap.coap(udpPort=61620)
+        self.socket.addResource(WhisperCoapServer(path))
+
+    def __del__(self):
+        self.socket.close()
+
+
+class WhisperCoapServer(coapResource.coapResource):
+
+    def __init__(self, path):
+        super(WhisperCoapServer, self).__init__(path)
 
     def POST(self, options=[], payload=None):
         print "Received CoAP message"
         print "Payload: " + payload
-
-        return coapDefines.COAP_RC_2_03_VALID,  options, None
-
-
+        time.sleep(0.5)
+        return (coapDefines.COAP_RC_2_04_CHANGED, options, None)

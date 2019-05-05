@@ -66,3 +66,6 @@ class WhisperController(eventBusClient.eventBusClient):
 
     def getLinkTester(self):
         return self.link_tester
+
+    def __del__(self):
+        self.coap_sender.join()
