@@ -107,9 +107,9 @@ class WhisperSixtopParser(eventBusClient.eventBusClient):
         return result
 
     def processCellOptions(self, cellType):
-        if cellType == "TX":
+        if cellType == "RX":
             return 0x01
-        elif cellType == "RX":
+        elif cellType == "TX":
             return 0x02
         elif cellType == "TXRX":
             return 0x04
