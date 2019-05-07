@@ -52,6 +52,7 @@ class WhisperController(eventBusClient.eventBusClient):
 
             if command[0] == "link":
                 self.link_tester.testLink(command[1], command[2])
+                return
 
         if dataToSend:
             if command[-1] == "root":
