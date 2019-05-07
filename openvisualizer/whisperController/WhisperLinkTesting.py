@@ -19,7 +19,7 @@ class WhisperLinkTester(eventBusClient.eventBusClient):
         node2_id = [(int(node2, 16) & 0xff00) >> 8, int(node2, 16) & 0x00ff]
 
         self.linkTestVars['node1'] = node1_id
-        self.linkTestVars['node2'] = node2
+        self.linkTestVars['node2'] = node2_id
         self.linkTestVars['openLbrCatchPing'] = True
         request = multiping.MultiPing([node1_address])
         request.send()
