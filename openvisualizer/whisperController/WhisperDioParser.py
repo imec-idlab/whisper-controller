@@ -1,6 +1,7 @@
 from openvisualizer.moteConnector import OpenParser
 from openvisualizer.eventBus      import eventBusClient
 
+import WhisperDefines
 
 class WhisperDioParser(eventBusClient.eventBusClient):
 
@@ -15,7 +16,7 @@ class WhisperDioParser(eventBusClient.eventBusClient):
         :return: dataToSend: command parsed to send to whisper nodes
         """
         # Initialize data to send + indicate fake dio command
-        dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x01]
+        dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMAND_DIO]
 
         # target id (16b, so split in 2 bytes)
         [dataToSend.append(i) for i in self.splitBytes(command[0], "hex")]
@@ -31,6 +32,7 @@ class WhisperDioParser(eventBusClient.eventBusClient):
         # Split rank in 2 bytes
         [dataToSend.append(i) for i in self.splitBytes(command[2])]
 
+        print dataToSend
         return dataToSend
 
     def splitBytes(self, number, mode="dec"):

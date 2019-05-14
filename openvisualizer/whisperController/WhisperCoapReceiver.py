@@ -18,8 +18,8 @@ class WhisperCoapServer(coapResource.coapResource):
         super(WhisperCoapServer, self).__init__(path)
 
     def POST(self, options=[], payload=None):
-        print "Received CoAP message"
-        print "Payload: " + ''.join('{:02x}'.format(x) for x in payload)
+        #print "Received CoAP message"
+        #print "Payload: " + ''.join('{:02x}'.format(x) for x in payload)
 
         if int(payload[0]) == 0x01:
             print "Received repsonse to dio command: "

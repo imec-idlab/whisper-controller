@@ -13,6 +13,7 @@ from WhisperLinkTesting import WhisperLinkTester
 from WhisperCoapSender import WhisperCoapSender
 from WhisperCoapReceiver import WhisperCoapReceiver
 
+import WhisperDefines
 
 class WhisperController(eventBusClient.eventBusClient):
 
@@ -44,11 +45,11 @@ class WhisperController(eventBusClient.eventBusClient):
         if not dataToSend:
             if command[0] == "neighbours":
                 # Initialize data to send + indicate fake dio command
-                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x04]
+                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMAND_NEIGHBOURS]
 
             if command[0] == "link_info":
                 # Initialize data to send + indicate fake dio command
-                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x03]
+                dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMAND_LINK_INFO]
 
             if command[0] == "link":
                 self.link_tester.testLink(command[1], command[2])

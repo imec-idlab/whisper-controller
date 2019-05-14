@@ -1,6 +1,7 @@
 from openvisualizer.moteConnector import OpenParser
 from openvisualizer.eventBus      import eventBusClient
 
+import WhisperDefines
 
 class WhisperSixtopParser(eventBusClient.eventBusClient):
 
@@ -16,7 +17,7 @@ class WhisperSixtopParser(eventBusClient.eventBusClient):
         """
 
         # Initialize data to send
-        dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, 0x02]
+        dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMAND_SIXTOP]
 
         if command[0] == "add":
             dataToSend.append(0x01)  # indicate whisper 6p add request
