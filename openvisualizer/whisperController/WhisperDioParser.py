@@ -16,6 +16,23 @@ class WhisperDioParser(eventBusClient.eventBusClient):
         :return: dataToSend: command parsed to send to whisper nodes
         """
         # Initialize data to send + indicate fake dio command
+
+        if command[0] == "toggle":
+            # Toggle propagating dios
+            dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMNAD_TOGGLE_DIO]
+            return dataToSend
+
+        if command[0] == "set_rank":
+            dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMNAD_SET_RANKTOSEND]
+
+            # target id (16b, so split in 2 bytes)
+            [dataToSend.append(i) for i in self.splitBytes(command[1], "hex")]
+
+            # Split rank in 2 bytes
+            [dataToSend.append(i) for i in self.splitBytes(command[2])]
+
+            return dataToSend
+
         dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMAND_DIO]
 
         # target id (16b, so split in 2 bytes)
