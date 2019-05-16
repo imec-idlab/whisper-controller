@@ -1,7 +1,7 @@
 import time
 from coap import coap, coapResource, coapDefines
 
-
+import WhisperDefines
 class WhisperCoapReceiver():
 
     def __init__(self, path):
@@ -21,14 +21,20 @@ class WhisperCoapServer(coapResource.coapResource):
         #print "Received CoAP message"
         #print "Payload: " + ''.join('{:02x}'.format(x) for x in payload)
 
-        if int(payload[0]) == 0x01:
+        if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_DIO:
             print "Received repsonse to dio command: "
             if int(payload[1]) == 0x00:
                 print "Success"
             else:
                 print "Failed"
 
-        if int(payload[0]) == 0x04:
+        if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_SIXTOP:
+            print "Received response to sixtop command"
+            if len(payload) > 2: 
+                for i in payload[1:]:
+                    print "%x" % i 
+
+        if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_NEIGHBOURS:
             print "Received response to get neighbour command"
 
             whisper_node_id = (payload[1] << 8) | payload[2]

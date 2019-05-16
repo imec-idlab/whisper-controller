@@ -60,7 +60,11 @@ class WhisperController(eventBusClient.eventBusClient):
                 self._sendToMoteProbe(serialport, dataToSend)
                 return
             else:
-                self.coap_sender.post(command[-1], dataToSend)
+                try:
+                    self.coap_sender.post(command[-1], dataToSend)
+                except Exception as e:
+                    pass
+                
                 return
         else:
             print "Whisper command failed."

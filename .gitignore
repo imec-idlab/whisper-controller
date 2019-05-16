@@ -1,0 +1,7 @@
+build/*
+site_cons/*
+.sconsign.dblite
+*.pyc
+*.so
+**.h
+*.bin

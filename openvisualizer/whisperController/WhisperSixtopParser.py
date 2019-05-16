@@ -36,7 +36,7 @@ class WhisperSixtopParser(eventBusClient.eventBusClient):
             if cellInfo: [dataToSend.append(i) for i in cellInfo]
 
         elif command[0] == "delete":
-            dataToSend.append(0x02)  # indicate whisper 6p add request
+            dataToSend.append(0x02)  # indicate whisper 6p delete request
 
             # add target
             [dataToSend.append(i) for i in self.splitBytes(command[1], "hex")]
@@ -54,7 +54,7 @@ class WhisperSixtopParser(eventBusClient.eventBusClient):
             if cellInfo: [dataToSend.append(i) for i in cellInfo]
 
         elif command[0] == "list":
-            dataToSend.append(0x01)  # indicate whisper 6p add request
+            dataToSend.append(0x05)  # indicate whisper 6p add request
 
             # add target
             [dataToSend.append(i) for i in self.splitBytes(command[1], "hex")]
@@ -72,7 +72,7 @@ class WhisperSixtopParser(eventBusClient.eventBusClient):
             [dataToSend.append(i) for i in self.splitBytes(command[5])]  # listing offset
 
         elif command[0] == "clear":
-            dataToSend.append(0x01)  # indicate whisper 6p add request
+            dataToSend.append(0x07)  # indicate whisper 6p clear request
             # add target
             [dataToSend.append(i) for i in self.splitBytes(command[1], "hex")]
             # add source

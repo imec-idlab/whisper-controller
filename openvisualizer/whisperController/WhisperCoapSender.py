@@ -17,7 +17,7 @@ class WhisperCoapSender(threading.Thread):
 
     def post(self, mote_id, dataToSend):
         mote_ip = self.mote_id_to_address(mote_id)
-        self.socket.PUT('coap://[{0}]/w'.format(mote_ip), payload=dataToSend)
+        self.socket.PUT('coap://[{0}]/w'.format(mote_ip), confirmable=False, payload=dataToSend)
 
     def run(self):
         while self.running: time.sleep(1)
