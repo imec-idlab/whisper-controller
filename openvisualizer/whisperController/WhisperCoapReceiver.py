@@ -30,9 +30,14 @@ class WhisperCoapServer(coapResource.coapResource):
 
         if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_SIXTOP:
             print "Received response to sixtop command"
-            if len(payload) > 2: 
-                for i in payload[1:]:
-                    print "%x" % i 
+            if len(Payload) > 2:
+                print "List response received"
+                # TODO: add parsing of the cells received
+            else:
+                if int(payload[1]) == 0x00:
+                    print "Success"
+                else:
+                    print "Failed"
 
         if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_NEIGHBOURS:
             print "Received response to get neighbour command"
@@ -49,6 +54,4 @@ class WhisperCoapServer(coapResource.coapResource):
             for n in neigbours:
                 print " * " + str(n)
 
-
-        time.sleep(0.5)
         return (coapDefines.COAP_RC_2_04_CHANGED, options, None)

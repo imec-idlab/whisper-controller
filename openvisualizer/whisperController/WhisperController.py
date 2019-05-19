@@ -3,6 +3,7 @@ log = logging.getLogger('logger_whisper')
 log.setLevel(logging.INFO)
 log.addHandler(logging.NullHandler())
 
+import time
 from pydispatch import dispatcher
 from openvisualizer.moteConnector import OpenParser
 from openvisualizer.eventBus import eventBusClient
@@ -12,6 +13,7 @@ from WhisperSixtopParser import WhisperSixtopParser
 from WhisperLinkTesting import WhisperLinkTester
 from WhisperCoapSender import WhisperCoapSender
 from WhisperCoapReceiver import WhisperCoapReceiver
+from WhisperTester import WhisperTester
 
 import WhisperDefines
 
@@ -39,6 +41,11 @@ class WhisperController(eventBusClient.eventBusClient):
         self.coap_receiver = WhisperCoapReceiver("/w")
         self.coap_sender = WhisperCoapSender(self.eui)
 
+        self.tester = WhisperTester(self)
+        self.tester.setCommand("dio 3 2 5000 root".split(' '))
+        self.tester.setInterval(10)
+        self.tester.setTimes(5)
+
     def parse(self, command, serialport):
         dataToSend = self.parser.parse(command)
 
@@ -53,6 +60,10 @@ class WhisperController(eventBusClient.eventBusClient):
 
             if command[0] == "link":
                 self.link_tester.testLink(command[1], command[2])
+                return
+
+            if command[0] == "start_test":
+                self.tester.start()
                 return
 
         if dataToSend:

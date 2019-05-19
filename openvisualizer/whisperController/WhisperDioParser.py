@@ -49,7 +49,6 @@ class WhisperDioParser(eventBusClient.eventBusClient):
         # Split rank in 2 bytes
         [dataToSend.append(i) for i in self.splitBytes(command[2])]
 
-        print dataToSend
         return dataToSend
 
     def splitBytes(self, number, mode="dec"):
