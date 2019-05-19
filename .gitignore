@@ -5,3 +5,5 @@ site_cons/*
 *.so
 **.h
 *.bin
+.sconsign.tmp
+build/runui/openVisualizer.log
