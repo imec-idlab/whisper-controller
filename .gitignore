@@ -1,0 +1,9 @@
+build/*
+site_cons/*
+.sconsign.dblite
+*.pyc
+*.so
+**.h
+*.bin
+.sconsign.tmp
+build/runui/openVisualizer.log
