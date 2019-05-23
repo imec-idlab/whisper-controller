@@ -10,6 +10,8 @@ log.addHandler(logging.NullHandler())
 
 import struct
 
+import time
+
 from pydispatch import dispatcher
 
 from ParserException import ParserException
@@ -18,7 +20,7 @@ import Parser
 class ParserData(Parser.Parser):
     
     HEADER_LENGTH  = 2
-    MSPERSLOT      = 20 #ms per slot.
+    MSPERSLOT      = 10 #ms per slot.
     
     IPHC_SAM       = 4
     IPHC_DAM       = 0
@@ -69,6 +71,20 @@ class ParserData(Parser.Parser):
             a="".join(hex(c) for c in source)
             log.debug("source address (just previous hop) of the packet is {0} ".format(a))
         
+	if input[-1]==87 and input[-13]==87:
+		#whisper packet
+		payload=input[-13:]
+		#print payload
+		aux=[input[-8],input[-9],input[-10],0,0]
+                #aux      = input[len(input)-14:len(input)-9]  # last 5 bytes of the packet are the ASN in the UDP latency packet
+                diff     = self._asndiference(aux,asnbytes)   # calculate difference 
+                timeinus = diff*self.MSPERSLOT                # compute time in ms
+		milli_sec = milli_sec = int(round(time.time()*1000*1000))
+
+		rec= "From "+str(int(input[-11])+(int(input[-12])*256))+" parent "+str(int(input[-4])+(int(input[-5])*256))+" RANK "+str(int(input[-2])+int(input[-3])*256)+" init asn "+str(aux)+" arrival asn "+str(asnbytes)+" diff "+str(diff)+" time diff "+str(timeinus)+" at "+str(milli_sec)+" counter "+str(int(input[-6])+(int(input[-7])*256))+"\n"
+		print rec
+		with open('root.logs', 'a') as fp:
+    			fp.write(rec)
         # remove asn src and dest and mote id at the beginning.
         # this is a hack for latency measurements... TODO, move latency to an app listening on the corresponding port.
         # inject end_asn into the packet as well

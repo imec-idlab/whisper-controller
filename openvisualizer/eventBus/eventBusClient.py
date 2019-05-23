@@ -19,6 +19,7 @@ class eventBusClient(object):
     
     PROTO_ICMPv6 = 'icmpv6'
     PROTO_UDP = 'udp'
+    PROTO_WHISPER = 'whisper'
     PROTO_ALL = [
         PROTO_ICMPv6,
         PROTO_UDP

@@ -389,3 +389,10 @@ class lbrClient(threading.Thread):
             signal      = 'networkPrefix',
             data        = prefix,
         )
+
+        # dispatch
+        dispatcher.send(
+            sender      = 'lbrClient',
+            signal      = 'networkPrefixForWhisper',
+            data        = prefix,
+        )

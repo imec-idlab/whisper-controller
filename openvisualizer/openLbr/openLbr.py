@@ -251,7 +251,7 @@ class OpenLbr(eventBusClient.eventBusClient):
             if self.whisperController is not None:
                 if ipv6['next_header'] == self.IANA_ICMPv6 and self.whisperController.getOpenLbrCatchPing():
                     # Change source route of ping request
-                    print "Changing ping request"
+                    print "Changing ping request to "+str(lowpan)
                     lowpan = self.whisperController.updatePingRequest(lowpan)
 
 
@@ -428,6 +428,11 @@ class OpenLbr(eventBusClient.eventBusClient):
             #receiver such as RPL DAO processing needs to know the source.
 
             success = self._dispatchProtocol(dispatchSignal,(ipv6dic['src_addr'],ipv6dic['app_payload']))
+
+
+	    #sending also to whisper controller
+	    dispatchSignal=(self.PROTO_WHISPER)
+	    self._dispatchProtocol(dispatchSignal,(ipv6dic['src_addr'],ipv6dic['app_payload']))
 
             if success:
                 return

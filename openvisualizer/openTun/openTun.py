@@ -93,6 +93,11 @@ class OpenTun(eventBusClient.eventBusClient):
             signal        = 'networkPrefix',
             data          = IPV6PREFIX
         )
+
+        self.dispatch(
+            signal        = 'networkPrefixForWhisper',
+            data          = IPV6PREFIX
+        )
     
     #======================== public ==========================================
     
