@@ -29,6 +29,8 @@ class WhisperController(eventBusClient.eventBusClient):
     OUTPUT_SERIAL_PORT_ROOT		= "/dev/ttyUSB0"
 		
     ROOT_MAC				= "mac"
+    #WHISPERNODE_MAC			= "92:cc:00:00:00:04"
+    WHISPERNODE_MAC			= "4b:00:06:13:01:ff"
 
     WILDCARD  = '*'
     PROTO_WHISPER = 'whisper'
@@ -160,12 +162,12 @@ class WhisperController(eventBusClient.eventBusClient):
     def _monitoring(self):
         
 	print "Starting monitoring thread"
-	time.sleep( 125 )
+	time.sleep( 50 )
 	print "Monitoring init"
 	
 	command=[]
 	command.append('neighbours')
-	command.append('01ff')					#TODO using a fixed id for whisper node
+	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
 	nodeA=False
@@ -175,9 +177,8 @@ class WhisperController(eventBusClient.eventBusClient):
 	
 	while True:
 		#example for test link that is not known
-		time.sleep( 30 )
-		return
-
+		time.sleep( 15 )
+		
 		#send info about the root
 		self.queue.put(self.nodes[self.ROOT_MAC])
 		if firstLoop==1:
@@ -194,8 +195,8 @@ class WhisperController(eventBusClient.eventBusClient):
 
 				if self.nodes[nodeId]['mac']==rootID or self.nodes[nodeId]['mac']==whisperNodeID: 	#skip the root and the whisper node
 					continue
-				if self.nodes[nodeId]['mac'].split(':')[-1]!="84":	#TODO provisional hack for testing only the links for the test
-					continue
+#				if self.nodes[nodeId]['mac'].split(':')[-1]!="84":	#TODO provisional hack for testing only the links for the example
+#					continue
 		
 				for nLinkWith in self.nodes.keys():
 					print self.nodes[nLinkWith]['mac']
@@ -203,8 +204,8 @@ class WhisperController(eventBusClient.eventBusClient):
 						continue
 
 					#TODO provisional hack for testing only the links connecting 84
-					if self.nodes[nLinkWith]['mac'].split(':')[-1]=="39" or self.nodes[nLinkWith]['mac'].split(':')[-1]=="89":
-						continue
+#					if self.nodes[nLinkWith]['mac'].split(':')[-1]=="39" or self.nodes[nLinkWith]['mac'].split(':')[-1]=="89":
+#						continue
 
 					if self.nodes[nodeId]['macParent']==self.nodes[nLinkWith]['mac']:
 						#"its my parent"
@@ -242,7 +243,7 @@ class WhisperController(eventBusClient.eventBusClient):
 
 	#TODO use a valid cell or process the error in case of schedule collision
 
-	if nodeB != str(self.ROOT_MAC.split(':')[4])+":"+str(self.ROOT_MAC.split(':')[5]):
+	if nodeB == str(self.ROOT_MAC.split(':')[4])+":"+str(self.ROOT_MAC.split(':')[5]):
 		nB=str(nodeA.split(':')[-2])+""+str(nodeA.split(':')[-1])
 		nA=str(nodeB.split(':')[-2])+""+str(nodeB.split(':')[-1])
 
@@ -251,44 +252,42 @@ class WhisperController(eventBusClient.eventBusClient):
 		nB=str(nodeB.split(':')[-2])+""+str(nodeB.split(':')[-1])
 
 
-	time.sleep( 5 )
-
-	print "Allocating TX cell"
-	#first we allocate a cell from b to a
+	print "Allocating TX cell between "+str(nA)+" and "+str(nB)	
+	#first we allocate a TX cell from a to B
 	command=[]
 	command.append('6p')
 	command.append('add')
-	command.append(str(nB))
 	command.append(str(nA))
+	command.append(str(nB))
 	command.append('TX')
 	command.append('cell')
 	command.append('10')
 	command.append('10')
-	command.append('01ff')	#whisper
+	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
-	print "Allocating RX cell between "+str(nA)+" and "+str(nB)	
-	#first we allocate a cell from a to b
+
+	time.sleep( 5 )
+
+
+	print "Allocating RX cell between "+str(nB)+" and "+str(nA)	
+	#first we allocate a RX cell from b to a
 	command=[]
 	command.append('6p')
 	command.append('add')
-	command.append(str(nA))
 	command.append(str(nB))
+	command.append(str(nA))
 	command.append('RX')
 	command.append('cell')
 	command.append('10')
 	command.append('10')
-	command.append('01ff')	#whisper
+	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
 	time.sleep( 5 )
 
 
-	nB=str(nodeA.split(':')[-2])+""+str(nodeA.split(':')[-1])
-	nA=str(nodeB.split(':')[-2])+""+str(nodeB.split(':')[-1])
-
-	print "Testing link"
-	#we do a ping from 2 to 3
+	print "Testing link. Pinging to "+str(nB)+" through "+str(nA)
 	command=[]
 	command.append('link')
 	command.append(str(nB))#target
@@ -430,7 +429,7 @@ class WhisperController(eventBusClient.eventBusClient):
 		data["hopsToRoot"]=nHops+1
 
 
-		if int(lastByte)==255:
+		if int(lastByte)==int(self.WHISPERNODE_MAC.split(":")[-1]):
 			data["isWhisperNode"]="true"
 		else:
 			data["isWhisperNode"]="false"

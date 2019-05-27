@@ -26,14 +26,7 @@ class WhisperLinkTester(eventBusClient.eventBusClient):
 
         self.linkTestVars['node1'] = node1_id
         self.linkTestVars['node2'] = node2_id
-
-
-	print "Preparing Ping to "+str(nodeB)+" root is "+str(str(self.wcontroller.ROOT_MAC.split(':')[4])+":"+str(self.wcontroller.ROOT_MAC.split(':')[5]))
-	if nodeB != str(self.wcontroller.ROOT_MAC.split(':')[4])+":"+str(self.wcontroller.ROOT_MAC.split(':')[5]):		#if next hop is root, no need for change source routing		
-        	self.linkTestVars['openLbrCatchPing'] = True
-	else:
-		self.linkTestVars['openLbrCatchPing'] = False
-		print "ping destination is not the root"
+	self.linkTestVars['openLbrCatchPing'] = True
 
 	print "Pinging node "+str([node1_address])
         request = multiping.MultiPing([node1_address])
@@ -103,15 +96,18 @@ class WhisperLinkTester(eventBusClient.eventBusClient):
 
         # Get route to required stop
         route = self._dispatchAndGetResult(signal='getSourceRoute', data=self.eui)
-        route.pop()
 
-        dest_eui = self.eui[:]
-        dest_eui[6] = self.linkTestVars['node1'][0]
-        dest_eui[7] = self.linkTestVars['node1'][1]
-        route.insert(0, dest_eui)
+	if len(route)!=0:	#only if next hop is not the root
+		route.pop()
 
-        lowpan['route'] = route
-        lowpan['nextHop'] = route[-1]
-        self.linkTestVars['openLbrCatchPing'] = False
+	dest_eui = self.eui[:]
+
+	dest_eui[6] = self.linkTestVars['node1'][0]
+	dest_eui[7] = self.linkTestVars['node1'][1]
+	route.insert(0, dest_eui)
+
+	lowpan['route'] = route
+	lowpan['nextHop'] = route[-1]
+	self.linkTestVars['openLbrCatchPing'] = False
 
         return lowpan

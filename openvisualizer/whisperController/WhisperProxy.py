@@ -78,8 +78,8 @@ class WhisperProxy():
 				oldParent=wcontroller.nodes[target]["macParent"]
 				print "Changing parent of node "+str(target)+" from old parent "+str(oldParent)+" to new parent "+str(newParent)
 
-				targetShort=str(target.split(':')[5])+""+str(target.split(':')[6])
-				parentShort=str(oldParent.split(':')[5])+""+str(oldParent.split(':')[6])
+				targetShort=str(target.split(':')[4])+""+str(target.split(':')[5])
+				parentShort=str(oldParent.split(':')[4])+""+str(oldParent.split(':')[5])
 
 				command=[]
 				command.append('dio')

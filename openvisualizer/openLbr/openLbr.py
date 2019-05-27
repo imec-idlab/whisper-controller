@@ -254,7 +254,6 @@ class OpenLbr(eventBusClient.eventBusClient):
                     print "Changing ping request to "+str(lowpan)
                     lowpan = self.whisperController.updatePingRequest(lowpan)
 
-
             # turn dictionary of fields into raw bytes
             lowpan_bytes     = self.reassemble_lowpan(lowpan)
 
