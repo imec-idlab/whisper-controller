@@ -14,6 +14,7 @@ from WhisperLinkTesting import WhisperLinkTester
 from WhisperCoapSender import WhisperCoapSender
 from WhisperCoapReceiver import WhisperCoapReceiver
 from WhisperTester import WhisperTester
+from SwitchParentAlgorithm import SwitchParentAlgorithm
 import WhisperDefines
 
 import threading
@@ -21,6 +22,7 @@ from WhisperTopology import WhisperTopology
 from WhisperProxy import WhisperProxy
 import openvisualizer.openvisualizer_utils as u
 from Queue import Queue
+
 
 class WhisperController(eventBusClient.eventBusClient):
 
@@ -64,6 +66,9 @@ class WhisperController(eventBusClient.eventBusClient):
 
 	#whisper topology
 	self.topology=WhisperTopology(self)
+
+	#whisper switch parent algorithm
+	self.algorithm=None
 
 	#whisper proxy
 	self.wProxy=WhisperProxy(self)
@@ -320,6 +325,7 @@ class WhisperController(eventBusClient.eventBusClient):
 	print "------------ Received network prefix: "+str(prefixString)
 	self.networkPrefixFormatted = prefixString	
 	self._setUpDagRoot(prefixString)
+	self.algorithm=SwitchParentAlgorithm(self,self.ROOT_MAC,self.WHISPERNODE_MAC)
 
 
     def _fromMoteDataLocal_notif_whisper(self,sender,signal,data):
@@ -404,7 +410,6 @@ class WhisperController(eventBusClient.eventBusClient):
 		
 
 		#calculate expected Rank according to RFC 8180
-		
 		rankParent=int(self.nodes[macparent]["rank"])
 								
 		#only for testing porposes
@@ -412,7 +417,6 @@ class WhisperController(eventBusClient.eventBusClient):
 		sr=0
 		sp=(3/pdr)-2
 		data["rank"] = rankParent + (rf*sp + sr) * self.MINHOPRANKINCREASE		#estimated aprox value 
-
 
 		#walk through the tree until the root
 		foundRoot=False

@@ -78,18 +78,31 @@ class WhisperProxy():
 				oldParent=wcontroller.nodes[target]["macParent"]
 				print "Changing parent of node "+str(target)+" from old parent "+str(oldParent)+" to new parent "+str(newParent)
 
-				targetShort=str(target.split(':')[4])+""+str(target.split(':')[5])
-				parentShort=str(oldParent.split(':')[4])+""+str(oldParent.split(':')[5])
+				(result,commandList) = wcontroller.algorithm.parentSwitch(target, oldParent,newParent)		
 
-				command=[]
-				command.append('dio')
-				command.append(targetShort)
-				command.append(parentShort)
-				command.append('3900')
-				command.append('root')
-				wcontroller.parse(command,wcontroller.OUTPUT_SERIAL_PORT_ROOT)
+				if result==False:
+					print "A whisper node is needed"
 
-				print "Command delivered"
+				for c in commandList:
+
+					targetShort=str(c['t'].split(':')[4])+""+str(c['t'].split(':')[5])
+					parentShort=str(c['ct'].split(':')[4])+""+str(c['ct'].split(':')[5])
+
+					command=[]
+					command.append('dio')
+					command.append(targetShort)
+					command.append(parentShort)
+					command.append(c['rank'])
+					if c['type']=='remoteDio':
+						command.append('root')	
+						print command
+						wcontroller.parse(command,wcontroller.OUTPUT_SERIAL_PORT_ROOT)	
+						print "Command delivered"				
+					else:
+						print "DIO mode not supported yet"
+					
+				print "REST message processed OK"
+				
 			else:
 				print str(request.json['message'])+" message type not recognized"
 
