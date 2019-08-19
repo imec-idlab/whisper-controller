@@ -9,6 +9,7 @@ import threading
 import requests
 from requests.auth import HTTPBasicAuth
 
+import time
 from flask import Flask, request, json
 
 app = Flask(__name__)
@@ -38,7 +39,7 @@ class WhisperProxy():
 	headers = {'Content-type': 'application/json'}
 
 	while True:
-
+	    time.sleep(0.01)
 	    event = controller.queue.get(block=True)
 		
 	    data_json = json.dumps(event)
@@ -78,10 +79,14 @@ class WhisperProxy():
 				oldParent=wcontroller.nodes[target]["macParent"]
 				print "Changing parent of node "+str(target)+" from old parent "+str(oldParent)+" to new parent "+str(newParent)
 
-				(result,commandList) = wcontroller.algorithm.parentSwitch(target, oldParent,newParent)		
+				if oldParent == newParent:
+					return "The new parent is already the old parent", 202
 
-				if result==False:
-					print "A whisper node is needed"
+				(fail,commandList) = wcontroller.algorithm.parentSwitch(target, oldParent,newParent)		
+				print "clist "+str(commandList)
+				print "fail "+str(fail)
+				if fail==True:
+					return "A whisper node is needed", 201
 
 				for c in commandList:
 
@@ -102,9 +107,12 @@ class WhisperProxy():
 						print "DIO mode not supported yet"
 					
 				print "REST message processed OK"
-				
-			else:
-				print str(request.json['message'])+" message type not recognized"
+
+			if request.json['message'] == "schedule-cell":	
+				data_parsed= ""+str(data_parsed)
+				newjson = json.loads(data_parsed)
+				print "Content is 6P "+str(newjson['operation'])+" "+str(newjson['srcNode'])+" "+str(newjson['dstNode'])+" "+str(newjson['type'])+" "+str(newjson['ts'])+" "+str(newjson['ch'])
+			print " Message processed"
 
 		else:
 			print str(request.json['protocol'])+" protocol not recognized"

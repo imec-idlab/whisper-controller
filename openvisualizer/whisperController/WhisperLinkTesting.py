@@ -1,5 +1,6 @@
 from openvisualizer.eventBus      import eventBusClient
 import multiping
+import time
 
 class WhisperLinkTester(eventBusClient.eventBusClient):
 
@@ -31,8 +32,8 @@ class WhisperLinkTester(eventBusClient.eventBusClient):
 	print "Pinging node "+str([node1_address])
         request = multiping.MultiPing([node1_address])
         request.send()
-
-        res = request.receive(1)  # 1 second timeout
+	time.sleep( 1 )
+        res = request.receive(3)  # 1 second timeout
         if res[0]:
             print "Ping success."
 	    for m in self.wcontroller.topology.topology['nodes']:

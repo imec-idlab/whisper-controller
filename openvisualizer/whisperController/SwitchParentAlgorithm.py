@@ -10,7 +10,7 @@ class SwitchParentAlgorithm():
 
 	self.MINRANKHOPINCREASE=256
 	self.THRESHOLD=512
-	self.HIGHRANK=16*self.MINRANKHOPINCREASE
+	self.HIGHRANK=(12*self.MINRANKHOPINCREASE)-1
 
 	self.wController=whisperController
 

@@ -30,14 +30,31 @@ class WhisperCoapServer(coapResource.coapResource):
                 print "Failed"
 
         if int(payload[0]) == WhisperDefines.WHISPER_COMMAND_SIXTOP:
-            print "Received response to sixtop command"
+            print "Received response to sixtop command "+str(payload)
             print ''.join('{:02x}'.format(x) for x in payload)
-            if len(Payload) > 2:
+            if len(payload) > 2:
                 print "List response received"
                 # TODO: add parsing of the received cell list
             else:
                 if int(payload[1]) == 0x00:
                     print "Success"
+
+		    newCell={}
+		    macNodeTx=self.wc.last6PCommand[0]		
+		    macNodeRx=self.wc.last6PCommand[1]	
+		    ts= self.wc.last6PCommand[2]
+		    ch= self.wc.last6PCommand[3]
+		    newCell['ch']= int(ch)
+		    newCell['tslot']=int(ts)
+		    newCell['type']="DEDICATED"
+		    newCell['rxNode']=macNodeRx
+		    newCell['txNode']=macNodeTx
+
+		    if macNodeTx not in self.wc.cellsToBeSent.keys():
+		    	self.wc.cellsToBeSent[macNodeTx]={}
+		    self.wc.cellsToBeSent[macNodeTx][ts]=newCell
+		    self.wc.last6PCommand=[]
+
                 else:
                     print "Failed"
 

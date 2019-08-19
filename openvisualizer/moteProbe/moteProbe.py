@@ -351,7 +351,6 @@ class moteProbe(threading.Thread):
                                     if log.isEnabledFor(logging.DEBUG):
                                         log.debug("{0}: {2} dehdlcized input: {1}".format(self.name, u.formatStringBuf(self.inputBuf), u.formatStringBuf(tempBuf)))
                                 except OpenHdlc.HdlcException as err:
-                                    print "hdlc error"
                                     log.warning('{0}: invalid serial frame: {2} {1}'.format(self.name, err, u.formatStringBuf(tempBuf)))
                                 else:
                                     if self.sendToParser:

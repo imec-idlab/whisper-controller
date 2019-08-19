@@ -17,6 +17,8 @@ from WhisperTester import WhisperTester
 from SwitchParentAlgorithm import SwitchParentAlgorithm
 import WhisperDefines
 
+import json 
+
 import threading
 from WhisperTopology import WhisperTopology
 from WhisperProxy import WhisperProxy
@@ -29,10 +31,14 @@ class WhisperController(eventBusClient.eventBusClient):
 
     #OUTPUT_SERIAL_PORT_ROOT		= "emulated1"
     OUTPUT_SERIAL_PORT_ROOT		= "/dev/ttyUSB0"
+
+    SLOTS_PER_SLOTFRAME			= 101
+    ACTIVE_SLOTS			= 1
+    NUMCHANS				= 16
 		
     ROOT_MAC				= "mac"
     #WHISPERNODE_MAC			= "92:cc:00:00:00:04"
-    WHISPERNODE_MAC			= "4b:00:06:13:01:ff"
+    WHISPERNODE_MAC			= "4b:00:06:13:0a:84"
 
     WILDCARD  = '*'
     PROTO_WHISPER = 'whisper'
@@ -42,11 +48,14 @@ class WhisperController(eventBusClient.eventBusClient):
     _TARGET_INFORMATION_TYPE            = 0x05
     _TRANSIT_INFORMATION_TYPE           = 0x06
 
-    def __init__(self):
+    def __init__(self,app):
         super(WhisperController, self).__init__("WhisperController", [])
 
         #self.eui = [0x14, 0x15, 0x92, 0xcc, 0x00, 0x00, 0x00, 0x00]
 	self.eui = [0x00, 0x12, 0x4b, 0x00, 0x06, 0x13, 0x00, 0x00]
+
+	#self.ipRoot="1415:92cc:0:1"
+	self.ipRoot="0012:4b00:0613:0656"
 
         # give this thread a name
         self.name = 'whisper_controller'
@@ -54,12 +63,16 @@ class WhisperController(eventBusClient.eventBusClient):
 	self.nodes={}
 	self.queue = Queue()
 
+	self.app=app
+
         # create parsers
         self.parser = WhisperParser()
         self.dio_parser = WhisperDioParser(self.eui)
         self.parser.attachSubparser("dio", self.dio_parser.parse)
         self.sixtop_parser = WhisperSixtopParser(self.eui)
         self.parser.attachSubparser("6p", self.sixtop_parser.parse)
+	self.last6PCommand=[]
+	self.cellsToBeSent={}
 
         # Whisper link tester
         self.link_tester = WhisperLinkTester(self.eui,self)
@@ -104,13 +117,13 @@ class WhisperController(eventBusClient.eventBusClient):
 		callback          = self._fromMoteDataLocal_notif_whisper,
 	)
 
-	print "Init additional thread"
-	self.stateLock            = threading.Lock()
-	self.threads = [threading.Thread(target=self._monitoring)]
+#	print "Init additional thread"
+#	self.stateLock            = threading.Lock()
+#	self.threads = [threading.Thread(target=self._monitoring)]
 
-	for thread in self.threads:
-            thread.setDaemon(True)
-            thread.start()
+#	for thread in self.threads:
+#            thread.setDaemon(True)
+#            thread.start()
 
     def parse(self, command, serialport):
         dataToSend = self.parser.parse(command)
@@ -136,6 +149,15 @@ class WhisperController(eventBusClient.eventBusClient):
             if command[0] == "ping":
                 self.link_tester.simplePing(command[1])
                 return
+	    if command[0] == "start":
+		print "Init additional thread to monitor"
+		self.stateLock            = threading.Lock()
+		self.threads = [threading.Thread(target=self._monitoring)]
+
+		for thread in self.threads:
+		    thread.setDaemon(True)
+		    thread.start()
+	        return
 
         if dataToSend:
             if command[-1] == "root":
@@ -164,10 +186,68 @@ class WhisperController(eventBusClient.eventBusClient):
     def __del__(self):
         self.coap_sender.join()
 
+    def _updateRootSchedule(self):
+
+	print "Updating Root Schedule"
+
+	ms = self.app.getMoteState("0656")
+	obj = json.loads(ms.getStateElem(ms.ST_SCHEDULE).toJson('data'))
+	for entry in obj:
+		if entry['type'] == "2 (RX)":
+			print entry
+			ch=entry['channelOffset']
+			ts=entry['slotOffset']
+
+			macBytes=[00,00,00,00,00,00]
+			i=0
+			for s in entry['neighbor'].split('-')[2:]:
+			
+			    if i==5:
+				macBytes[i]=s.split(' ')[0]
+			    else:
+				macBytes[i]=s
+			    i+=1
+			mac=(':'.join(macBytes))
+		
+			if mac not in self.cellsToBeSent.keys():
+				self.cellsToBeSent[mac]={}
+			if ts not in self.cellsToBeSent[mac].keys():
+				newCell={}
+				newCell['ch']= int(ch)
+				newCell['tslot']=int(ts)
+				newCell['type']="DEDICATED"
+				newCell['rxNode']=self.ROOT_MAC
+				newCell['txNode']=mac
+				self.cellsToBeSent[mac][ts]=newCell		    	
+			    
+    #used for debug
+    def _removeCell(self):
+        
+	print "Stoping monitoring thread"
+	
+	#cells received from whisper commands
+	print "Before "+str(self.cellsToBeSent)
+	print "Before DB "+str(self.nodes)
+
+	for node in self.cellsToBeSent.keys():
+		print "Checking old cells for node "+str(node)+" cells: "+str(self.cellsToBeSent[node])
+		print "Node "+str(node)+" has cells id DB: "+str(self.nodes[node]["cells"])
+		for ts in self.cellsToBeSent[node].keys():
+			print "ts "+str(ts)
+			if ts=='10':	#for testing
+				print "removing from db "+str(self.nodes[node]["cells"][ts]) 
+				del self.nodes[node]["cells"][ts]
+				print "removing from cells to be sent "+str(self.cellsToBeSent[node][ts]) 
+				del self.cellsToBeSent[node][ts]
+		
+	print "After "+str(self.cellsToBeSent)
+	print "After DB "+str(self.nodes)
+
+
     def _monitoring(self):
         
 	print "Starting monitoring thread"
-	time.sleep( 50 )
+	time.sleep( 1 )
 	print "Monitoring init"
 	
 	command=[]
@@ -182,9 +262,10 @@ class WhisperController(eventBusClient.eventBusClient):
 	
 	while True:
 		#example for test link that is not known
-		time.sleep( 15 )
+		time.sleep( 5 )
 		
 		#send info about the root
+		self._updateRootSchedule()
 		self.queue.put(self.nodes[self.ROOT_MAC])
 		if firstLoop==1:
 			print "Loop! first one"
@@ -224,14 +305,16 @@ class WhisperController(eventBusClient.eventBusClient):
 					print "It seems that the link "+str(nodeId)+" - "+str(nLinkWith)+" could exist"
 					nodeA=str(self.nodes[nodeId]['mac'].split(':')[4])+":"+str(self.nodes[nodeId]['mac'].split(':')[5])
 					nodeB=str(self.nodes[nLinkWith]['mac'].split(':')[4])+":"+str(self.nodes[nLinkWith]['mac'].split(':')[5])
+					nodeAFull=self.nodes[nodeId]['mac']
+					nodeBFull=self.nodes[nLinkWith]['mac']
 					break
 				if nodeA != False and nodeB != False:
 					break  			
 			
 			
 			print "done"
-			firstLoop=self._testLink(nodeA, nodeB)
-			
+			firstLoop=self._testLink(nodeAFull,nodeBFull )
+		time.sleep( 10 )	
 
     def _testLink(self,nodeA,nodeB):
         '''
@@ -269,6 +352,10 @@ class WhisperController(eventBusClient.eventBusClient):
 	command.append('10')
 	command.append('10')
 	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
+	self.last6PCommand.append(nodeA)	#tx
+	self.last6PCommand.append(nodeB)	#rx
+	self.last6PCommand.append('10')		#ts
+        self.last6PCommand.append('10')		#ch
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
 
@@ -289,7 +376,7 @@ class WhisperController(eventBusClient.eventBusClient):
 	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
-	time.sleep( 5 )
+	time.sleep( 10 )
 
 
 	print "Testing link. Pinging to "+str(nB)+" through "+str(nA)
@@ -391,6 +478,7 @@ class WhisperController(eventBusClient.eventBusClient):
 		data = {}
 
 		lastByte=int(mac.split(':')[-1],16)
+		secLastByte=int(mac.split(':')[-2],16)
 		fakeIpv4="10.10.0"
 		print "Adding new node "+str(src)+" with lastbyte "+str(lastByte)		
 
@@ -408,6 +496,17 @@ class WhisperController(eventBusClient.eventBusClient):
 		data["latencyASNtoTheRoot"]=0					#TODO
 		data["overallQuality"]=1					#TODO
 		
+
+		autonomousCell={}
+		intVal=(secLastByte*256)+lastByte
+		ts= self.ACTIVE_SLOTS + ( intVal % (self.SLOTS_PER_SLOTFRAME-self.ACTIVE_SLOTS))
+		autonomousCell['ch']= int(intVal % (self.NUMCHANS))
+		autonomousCell['tslot']=int(ts)
+		autonomousCell['type']="SHARED"
+		autonomousCell['rxNode']=mac
+		autonomousCell['txNode']="FF:FF:FF:FF:FF:FF"
+
+		data["cells"][ts]=autonomousCell
 
 		#calculate expected Rank according to RFC 8180
 		rankParent=int(self.nodes[macparent]["rank"])
@@ -431,11 +530,12 @@ class WhisperController(eventBusClient.eventBusClient):
 				nHops+=1
 
 		data["hopsToRoot"]=nHops+1
-
-
-		if int(lastByte)==int(self.WHISPERNODE_MAC.split(":")[-1]):
+		wMacLastByte=self.WHISPERNODE_MAC.split(":")[-1]
+		if int(lastByte)==int(str(wMacLastByte),16):
+			print "This node is a Whisper node "+str(int(lastByte))+" "+str(int(str(wMacLastByte),16))
 			data["isWhisperNode"]="true"
 		else:
+			print "This node is not a Whisper node "+str(int(lastByte))+" "+str(int(str(wMacLastByte),16))
 			data["isWhisperNode"]="false"
 
 
@@ -455,6 +555,18 @@ class WhisperController(eventBusClient.eventBusClient):
 		if mac in self.nodes.keys():
 		    if macparent not in self.nodes[mac]["neighbors"]:
 			self.topology.addLink(mac,macparent,pdr,1)
+
+		#cells received from whisper commands
+		for node in self.cellsToBeSent.keys():
+			print "Checking new cells for node "+str(node)
+			if node == mac:
+				print "Node "+str(mac)+" has cell "+str(self.cellsToBeSent[mac])
+				for ts in self.cellsToBeSent[mac].keys():
+					self.nodes[mac]["cells"][ts]=self.cellsToBeSent[mac][ts]
+
+		
+
+
 
 	self.topology.writeTopo()
 	self.queue.put(self.nodes[mac])
@@ -540,8 +652,8 @@ class WhisperController(eventBusClient.eventBusClient):
 	'''
 
         #TODO to be updated with address of the root node
-	#src="1415:92cc:0:1"
-	src="0012:4b00:0613:0a89"
+	
+	src=self.ipRoot
 	parents="false"
 	children=[]
   
@@ -567,8 +679,8 @@ class WhisperController(eventBusClient.eventBusClient):
 
 	self.ROOT_MAC=mac
 
-	lastByte=int(macBytes[-1],16)
-
+	lastByte=int(mac.split(':')[-1],16)
+	secLastByte=int(mac.split(':')[-2],16)
 	fakeIpv4="10.10.0"
 
 	#this is a wired link
@@ -583,12 +695,33 @@ class WhisperController(eventBusClient.eventBusClient):
 	data["ipv4"]='{0}.{1}'.format(fakeIpv4,str(lastByte))
 	data["rank"]="256"
 	data["neighbors"]=[]
-	data["cells"]=[]
+	data["cells"]={}
 	data["timestamp"]=str(int(round(time.time() * 1000)))
 	data["powered"]="true"
 	data["latencyASNtoTheRoot"]=0
 	data["hopsToRoot"]=0
 	data["overallQuality"]=1
+
+	minimalCell={}
+	minimalCell['ch']=0
+	minimalCell['tslot']=0
+	minimalCell['type']="SHARED"
+	minimalCell['rxNode']="FF:FF:FF:FF:FF:FF"
+	minimalCell['txNode']="FF:FF:FF:FF:FF:FF"
+
+	data["cells"][0]=minimalCell
+
+
+	autonomousCell={}
+	intVal=(secLastByte*256)+lastByte
+	ts= self.ACTIVE_SLOTS + ( intVal % (self.SLOTS_PER_SLOTFRAME-self.ACTIVE_SLOTS))
+	autonomousCell['ch']= int(intVal % (self.NUMCHANS))
+	autonomousCell['tslot']=int(ts)
+	autonomousCell['type']="SHARED"
+	autonomousCell['rxNode']=mac
+	autonomousCell['txNode']="FF:FF:FF:FF:FF:FF"
+
+	data["cells"][ts]=autonomousCell
 
 	self.queue.put(data)
 	self.topology.addNode(mac,False,False)

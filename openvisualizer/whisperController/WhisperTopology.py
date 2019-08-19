@@ -83,7 +83,7 @@ class WhisperTopology():
 	if nodeA in self.wcontroller.nodes.keys():
 		#print str(nodeA)+" is already in the keys"
 		if not any(d['mac'] == nodeB for d in self.wcontroller.nodes[nodeA]['neighbors']):
-			print str(nodeB)+" is not in the neighbor list yet"
+			#print str(nodeB)+" is not in the neighbor list yet"
 			newNeigh={}
 			newNeigh['mac']=nodeB
 			newNeigh['rank']="65535"								#will be updated later by the controller
@@ -95,7 +95,7 @@ class WhisperTopology():
 	if nodeB in self.wcontroller.nodes.keys():
 		#print str(nodeB)+" is already in the keys"
 		if not any(d['mac'] == nodeA for d in self.wcontroller.nodes[nodeB]['neighbors']):
-			print str(nodeA)+" is not in the neighbor list yet"
+			#print str(nodeA)+" is not in the neighbor list yet"
 			newNeigh={}
 			newNeigh['mac']=nodeA
 			newNeigh['rank']="65535"								#will be updated later by the controller

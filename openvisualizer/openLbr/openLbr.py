@@ -251,7 +251,7 @@ class OpenLbr(eventBusClient.eventBusClient):
             if self.whisperController is not None:
                 if ipv6['next_header'] == self.IANA_ICMPv6 and self.whisperController.getOpenLbrCatchPing():
                     # Change source route of ping request
-                    print "Changing ping request to "+str(lowpan)
+                    print "Changing ping request of "+str(lowpan)
                     lowpan = self.whisperController.updatePingRequest(lowpan)
 
             # turn dictionary of fields into raw bytes
