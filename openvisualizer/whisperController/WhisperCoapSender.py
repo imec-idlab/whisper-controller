@@ -20,9 +20,9 @@ class WhisperCoapSender(threading.Thread):
         self.socket.PUT('coap://[{0}]/w'.format(mote_ip), confirmable=False, payload=dataToSend)
 
     def run(self):
-        while self.running: time.sleep(1)
+        while self.running: time.sleep(10)
 
-    def join(self, timeout=0):
+    def join(self, timeout=15):
         self.running = False
         self.socket.close()
         super(WhisperCoapSender, self).join(timeout)

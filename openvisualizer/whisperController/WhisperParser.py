@@ -11,10 +11,11 @@ class WhisperParser():
         :return: dataToSend
         """
         key = command[0]
-
         for subparser_key in self.subparsers.keys():
             if subparser_key == key:
                 try:
+		    print command
+		    print key
                     return self.subparsers[key](command[1:-1])
                 except Exception as e:
                     print e.message

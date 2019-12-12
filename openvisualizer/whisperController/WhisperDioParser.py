@@ -16,7 +16,7 @@ class WhisperDioParser(eventBusClient.eventBusClient):
         :return: dataToSend: command parsed to send to whisper nodes
         """
         # Initialize data to send + indicate fake dio command
-
+	print command
         if command[0] == "toggle":
             # Toggle propagating dios
             dataToSend = [OpenParser.OpenParser.SERFRAME_PC2MOTE_WHISPER, WhisperDefines.WHISPER_COMMNAD_TOGGLE_DIO]

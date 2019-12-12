@@ -117,7 +117,7 @@ class WhisperController(eventBusClient.eventBusClient):
 		callback          = self._fromMoteDataLocal_notif_whisper,
 	)
 
-#	print "Init additional thread"
+	print "Init done"
 #	self.stateLock            = threading.Lock()
 #	self.threads = [threading.Thread(target=self._monitoring)]
 
@@ -127,7 +127,8 @@ class WhisperController(eventBusClient.eventBusClient):
 
     def parse(self, command, serialport):
         dataToSend = self.parser.parse(command)
-
+        print command
+	print dataToSend
         if not dataToSend:
             if command[0] == "neighbours":
 		print "Sending neighbour command"
@@ -160,11 +161,13 @@ class WhisperController(eventBusClient.eventBusClient):
 	        return
 
         if dataToSend:
+	    print command
             if command[-1] == "root":
                 self._sendToMoteProbe(serialport, dataToSend)
                 return
             else:
                 try:
+		    print "Sending CoAP message "+str(command[-1])+" "+str(dataToSend)
                     self.coap_sender.post(command[-1], dataToSend)
                 except Exception as e:
                     pass
@@ -190,11 +193,16 @@ class WhisperController(eventBusClient.eventBusClient):
 
 	print "Updating Root Schedule"
 
-	ms = self.app.getMoteState("0656")
+	if self.ipRoot=="1415:92cc:0:1":	#sim mode
+		ms = self.app.getMoteState("0001")
+	else:
+		ms = self.app.getMoteState(self.ipRoot.split(':')[3])
 	obj = json.loads(ms.getStateElem(ms.ST_SCHEDULE).toJson('data'))
 	for entry in obj:
 		if entry['type'] == "2 (RX)":
-			print entry
+		    print entry	
+		    if entry['neighbor'] != " (anycast)":
+		        
 			ch=entry['channelOffset']
 			ts=entry['slotOffset']
 
@@ -207,6 +215,7 @@ class WhisperController(eventBusClient.eventBusClient):
 			    else:
 				macBytes[i]=s
 			    i+=1
+			print macBytes
 			mac=(':'.join(macBytes))
 		
 			if mac not in self.cellsToBeSent.keys():
@@ -218,7 +227,9 @@ class WhisperController(eventBusClient.eventBusClient):
 				newCell['type']="DEDICATED"
 				newCell['rxNode']=self.ROOT_MAC
 				newCell['txNode']=mac
-				self.cellsToBeSent[mac][ts]=newCell		    	
+				self.cellsToBeSent[mac][ts]=newCell	
+		    else:
+			print "This is an autonomous cell. It will be addded through the root's neighbor information"		    	
 			    
     #used for debug
     def _removeCell(self):
@@ -252,6 +263,9 @@ class WhisperController(eventBusClient.eventBusClient):
 	
 	command=[]
 	command.append('neighbours')
+#	if self.ipRoot=="1415:92cc:0:1":	#sim mode
+#		command.append(int(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5])))
+#	else:
 	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
@@ -261,6 +275,8 @@ class WhisperController(eventBusClient.eventBusClient):
 	firstLoop=1
 	
 	while True:
+
+		print "Init loop"
 		#example for test link that is not known
 		time.sleep( 5 )
 		
@@ -276,7 +292,8 @@ class WhisperController(eventBusClient.eventBusClient):
 					rootID=self.nodes[nodeId]['mac']
 				if self.nodes[nodeId]['isWhisperNode']=="true":
 					whisperNodeID=self.nodes[nodeId]['mac']
-			
+			print "Whisper node is "+str(whisperNodeID)
+			print "Root node is "+str(rootID)
 			for nodeId in self.nodes.keys():
 
 				if self.nodes[nodeId]['mac']==rootID or self.nodes[nodeId]['mac']==whisperNodeID: 	#skip the root and the whisper node
@@ -293,11 +310,19 @@ class WhisperController(eventBusClient.eventBusClient):
 #					if self.nodes[nLinkWith]['mac'].split(':')[-1]=="39" or self.nodes[nLinkWith]['mac'].split(':')[-1]=="89":
 #						continue
 
+					#TODO provisional hack for testing only the links connecting 84
+					if self.nodes[nLinkWith]['mac'].split(':')[-1]=="02" or self.nodes[nLinkWith]['mac'].split(':')[-1]=="03":
+						continue
+
 					if self.nodes[nodeId]['macParent']==self.nodes[nLinkWith]['mac']:
 						#"its my parent"
 						continue				
 					if self.nodes[nLinkWith]['mac'] == whisperNodeID:
 						#"its a wishper node"
+						continue
+					if self.nodes[nLinkWith]['mac']==self.ROOT_MAC:
+						print "Skipping link with root node"
+						#"its a root node"
 						continue
 					if any(d['mac'] == self.nodes[nLinkWith]['mac'] for d in self.nodes[nodeId]['neighbors']):
 						#"its already my neighbor"
@@ -345,12 +370,19 @@ class WhisperController(eventBusClient.eventBusClient):
 	command=[]
 	command.append('6p')
 	command.append('add')
+#	if self.ipRoot=="1415:92cc:0:2":	#sim mode
+#		command.append(str(int(str(nA))))
+#		command.append(str(int(str(nB))))
+#	else:
 	command.append(str(nA))
 	command.append(str(nB))
 	command.append('TX')
 	command.append('cell')
 	command.append('10')
 	command.append('10')
+#	if self.ipRoot=="1415:92cc:0:2":	#sim mode
+#		command.append(str(int(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))))	#whisper
+#	else:
 	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
 	self.last6PCommand.append(nodeA)	#tx
 	self.last6PCommand.append(nodeB)	#rx
@@ -362,19 +394,26 @@ class WhisperController(eventBusClient.eventBusClient):
 	time.sleep( 5 )
 
 
-	print "Allocating RX cell between "+str(nB)+" and "+str(nA)	
-	#first we allocate a RX cell from b to a
-	command=[]
-	command.append('6p')
-	command.append('add')
-	command.append(str(nB))
-	command.append(str(nA))
-	command.append('RX')
-	command.append('cell')
-	command.append('10')
-	command.append('10')
-	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
-	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
+#	print "Allocating RX cell between "+str(nB)+" and "+str(nA)	
+#	#first we allocate a RX cell from b to a
+#	command=[]
+#	command.append('6p')
+#	command.append('add')
+##	if self.ipRoot=="1415:92cc:0:1":	#sim mode
+##		command.append(str(int(str(nB))))
+##		command.append(str(int(str(nA))))
+##	else:
+#	command.append(str(nB))
+#	command.append(str(nA))
+#	command.append('RX')
+#	command.append('cell')
+#	command.append('10')
+#	command.append('10')
+##	if self.ipRoot=="1415:92cc:0:1":	#sim mode
+##		command.append(str(int(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))))	#whisper
+##	else:
+#	command.append(str(self.WHISPERNODE_MAC.split(':')[4])+""+str(self.WHISPERNODE_MAC.split(':')[5]))	#whisper
+#	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
 	time.sleep( 10 )
 
@@ -382,8 +421,12 @@ class WhisperController(eventBusClient.eventBusClient):
 	print "Testing link. Pinging to "+str(nB)+" through "+str(nA)
 	command=[]
 	command.append('link')
-	command.append(str(nB))#target
-	command.append(str(nA))#last hop	
+#	if self.ipRoot=="1415:92cc:0:1":	#sim mode
+#		command.append(str(int(str(nB))))
+#		command.append(str(int(str(nA))))
+#	else:
+	command.append(str(nB))
+	command.append(str(nA))	
 	self.parse(command,self.OUTPUT_SERIAL_PORT_ROOT)
 
 	return 0
@@ -420,8 +463,13 @@ class WhisperController(eventBusClient.eventBusClient):
         Called when receiving 
         '''  
 	#"received DAO"
+
+	if data[1][0]!=0:
+		return	#it is not a DAO	
 	
+
 	(prefix,src, parents, children)=self._indicateDAO_inWhisper(data)
+
 
 	if prefix==None or len(parents)==0:
 		return
@@ -502,7 +550,7 @@ class WhisperController(eventBusClient.eventBusClient):
 		ts= self.ACTIVE_SLOTS + ( intVal % (self.SLOTS_PER_SLOTFRAME-self.ACTIVE_SLOTS))
 		autonomousCell['ch']= int(intVal % (self.NUMCHANS))
 		autonomousCell['tslot']=int(ts)
-		autonomousCell['type']="SHARED"
+		autonomousCell['type']="RX"
 		autonomousCell['rxNode']=mac
 		autonomousCell['txNode']="FF:FF:FF:FF:FF:FF"
 
@@ -717,7 +765,7 @@ class WhisperController(eventBusClient.eventBusClient):
 	ts= self.ACTIVE_SLOTS + ( intVal % (self.SLOTS_PER_SLOTFRAME-self.ACTIVE_SLOTS))
 	autonomousCell['ch']= int(intVal % (self.NUMCHANS))
 	autonomousCell['tslot']=int(ts)
-	autonomousCell['type']="SHARED"
+	autonomousCell['type']="RX"
 	autonomousCell['rxNode']=mac
 	autonomousCell['txNode']="FF:FF:FF:FF:FF:FF"
 
