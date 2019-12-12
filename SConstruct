@@ -114,8 +114,7 @@ env['ROOT_BUILD_DIR'] = os.path.join(os.getcwd(), 'build')
 env['FW_DIR']         = os.path.join('..', 'openwsn-fw')
 
 # Add whisper root and whiser node path to the env
-env['FW_DIR_WHISPER_ROOT']         = os.path.join('..', 'openwsn-fw-root')
-env['FW_DIR_WHISPER_NODE']         = os.path.join('..', 'openwsn-fw-node')
+env['FW_DIR_WHISPER_NODE']         = os.path.join('..', 'openwsn-fw-whispernode')
 
 def default(env,target,source): 
     print SCons.Script.help_text
@@ -166,6 +165,17 @@ AddOption('--opentestbed',
     default   = False,
     action    = 'store_true')
 runnerEnv['OPENTESTBED'] = GetOption('opentestbed')
+
+AddOption('--mqtt-broker-address',
+    dest      = 'mqtt_broker_address',
+    type      = 'string')
+runnerEnv['MQTT_BROKER_ADDRESS'] = GetOption('mqtt_broker_address')
+
+AddOption('--opentun-null',
+    dest      = 'opentun_null',
+    default   = False,
+    action    = 'store_true')
+runnerEnv['OPENTUN_NULL'] = GetOption('opentun_null')
 
 AddOption('--ovdebug',
     dest      = 'debugOpt',

@@ -270,6 +270,7 @@ class OpenLbr(eventBusClient.eventBusClient):
                     ))
                 log.error(self._format_lowpan(lowpan,lowpan_bytes))
                 return
+            
 
             #print "output:"
             #print lowpan_bytes

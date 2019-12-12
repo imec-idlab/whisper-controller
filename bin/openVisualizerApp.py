@@ -40,7 +40,7 @@ class OpenVisualizerApp(object):
     top-level functionality for several UI clients.
     '''
     
-    def __init__(self,confdir,datadir,logdir,simulatorMode,numMotes,trace,debug,usePageZero,simTopology,iotlabmotes, testbedmotes, pathTopo):
+    def __init__(self,confdir,datadir,logdir,simulatorMode,numMotes,trace,debug,usePageZero,simTopology,iotlabmotes, testbedmotes, pathTopo, mqtt_broker_address, opentun_null):
         
         # store params
         self.confdir              = confdir
@@ -67,7 +67,7 @@ class OpenVisualizerApp(object):
         self.openLbr.setWhisperController(self.whisperController.getLinkTester())
 
         # create openTun call last since indicates prefix
-        self.openTun              = openTun.create() 
+        self.openTun              = openTun.create(opentun_null)
         if self.simulatorMode:
             from openvisualizer.SimEngine import SimEngine, MoteHandler
             
@@ -90,18 +90,19 @@ class OpenVisualizerApp(object):
         if self.simulatorMode:
             # in "simulator" mode, motes are emulated
             sys.path.append(os.path.join(self.datadir, 'sim_files'))
+            #import oos_openwsn
             import openwsn.oos_openwsn
             import whisper_node.oos_openwsn
 
             self.moteProbes       = []
             for i in range(self.numMotes):
-                if i == 0 or i == 3:
+                if i == 0 or i == 1:
                     # Start a whisper node
                     MoteHandler.readNotifIds(
                         os.path.join(self.datadir, 'sim_files', 'whisper_node', 'openwsnmodule_obj.h'))
                     moteHandler = MoteHandler.MoteHandler(whisper_node.oos_openwsn.OpenMote())
                     self.simengine.indicateNewMote(moteHandler)
-                    self.moteProbes += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+                    self.moteProbes += [moteProbe.moteProbe(mqtt_broker_address, emulatedMote=moteHandler)]
                     print "Started a whisper node"
                 else:
                     # Start a normal openwsn node
@@ -109,25 +110,26 @@ class OpenVisualizerApp(object):
                         os.path.join(self.datadir, 'sim_files', 'openwsn', 'openwsnmodule_obj.h'))
                     moteHandler = MoteHandler.MoteHandler(openwsn.oos_openwsn.OpenMote())
                     self.simengine.indicateNewMote(moteHandler)
-                    self.moteProbes += [moteProbe.moteProbe(emulatedMote=moteHandler)]
+                    self.moteProbes += [moteProbe.moteProbe(mqtt_broker_address, emulatedMote=moteHandler)]
                     print "Started an openwsn node"
         elif self.iotlabmotes:
             # in "IoT-LAB" mode, motes are connected to TCP ports
             
             self.moteProbes       = [
-                moteProbe.moteProbe(iotlabmote=p) for p in self.iotlabmotes.split(',')
+                moteProbe.moteProbe(mqtt_broker_address, iotlabmote=p) for p in self.iotlabmotes.split(',')
             ]
         elif self.testbedmotes:
-            motesfinder = moteProbe.OpentestbedMoteFinder()
+            motesfinder = moteProbe.OpentestbedMoteFinder(mqtt_broker_address)
             self.moteProbes       = [
-                moteProbe.moteProbe(testbedmote_eui64=p) for p in motesfinder.get_opentestbed_motelist()
+                moteProbe.moteProbe(mqtt_broker_address, testbedmote_eui64=p)
+                for p in motesfinder.get_opentestbed_motelist()
             ]
             
         else:
             # in "hardware" mode, motes are connected to the serial port
 
             self.moteProbes       = [
-                moteProbe.moteProbe(serialport=p) for p in moteProbe.findSerialPorts()
+                moteProbe.moteProbe(mqtt_broker_address, serialport=p) for p in moteProbe.findSerialPorts()
             ]
         
         # create a moteConnector for each moteProbe
@@ -144,7 +146,13 @@ class OpenVisualizerApp(object):
             eventLogger.eventLogger(ms) for ms in self.moteStates
         ]
 
-        self.remoteConnectorServer = remoteConnectorServer.remoteConnectorServer()
+        if self.testbedmotes:
+            # at least, when we use OpenTestbed, we don't need
+            # Rover. Don't instantiate remoteConnectorServer which
+            # consumes a lot of CPU.
+            self.remoteConnectorServer = None
+        else:
+            self.remoteConnectorServer = remoteConnectorServer.remoteConnectorServer()
 
         # boot all emulated motes, if applicable
         if self.simulatorMode:
@@ -225,6 +233,7 @@ class OpenVisualizerApp(object):
         :param moteid: 16-bit ID of mote
         :rtype:        moteState or None if not found
         '''
+	
         for ms in self.moteStates:
             idManager = ms.getStateElem(ms.ST_IDMANAGER)
             if idManager and idManager.get16bAddr():
@@ -371,18 +380,20 @@ def main(parser=None):
     log.info('sys.path:\n\t{0}'.format('\n\t'.join(str(p) for p in sys.path)))
         
     return OpenVisualizerApp(
-        confdir         = confdir,
-        datadir         = datadir,
-        logdir          = logdir,
-        simulatorMode   = argspace.simulatorMode,
-        numMotes        = argspace.numMotes,
-        trace           = argspace.trace,
-        debug           = argspace.debug,
-        usePageZero     = argspace.usePageZero,
-        simTopology     = argspace.simTopology,
-        iotlabmotes     = argspace.iotlabmotes,
-        testbedmotes    = argspace.testbedmotes,
-        pathTopo        = argspace.pathTopo
+        confdir             = confdir,
+        datadir             = datadir,
+        logdir              = logdir,
+        simulatorMode       = argspace.simulatorMode,
+        numMotes            = argspace.numMotes,
+        trace               = argspace.trace,
+        debug               = argspace.debug,
+        usePageZero         = argspace.usePageZero,
+        simTopology         = argspace.simTopology,
+        iotlabmotes         = argspace.iotlabmotes,
+        testbedmotes        = argspace.testbedmotes,
+        pathTopo            = argspace.pathTopo,
+        mqtt_broker_address = argspace.mqtt_broker_address,
+        opentun_null        = argspace.opentun_null
     )
 
 def _addParserArgs(parser):
@@ -439,6 +450,18 @@ def _addParserArgs(parser):
         default    = False,
         action     = 'store_true',
         help       = 'connect motes from opentestbed'
+    )
+    parser.add_argument('--mqtt-broker-address',
+        dest       = 'mqtt_broker_address',
+        default    = 'argus.paris.inria.fr',
+        action     = 'store',
+        help       = 'MQTT broker address to use'
+    )
+    parser.add_argument('--opentun-null',
+        dest       = 'opentun_null',
+        default    = False,
+        action     = 'store_true',
+        help       = 'don\'t use TUN device'
     )
     parser.add_argument('-i', '--pathTopo', 
         dest       = 'pathTopo',

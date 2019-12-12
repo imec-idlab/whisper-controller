@@ -20,9 +20,8 @@ class eventLogger(threading.Thread):
         self.moteState                 = moteState
         self.serialport                = self.moteState.moteConnector.serialport
         self.logfile                   = 'eventLog_{0}.log'.format(self.serialport)
-        self.num_pkt_dropped_file      = 'pktDropLog_{0}.log'.format(self.serialport)
-        self.num_desync_file           = 'numDesyncLog_{0}.log'.format(self.serialport)
-        self.num_booted_file           = 'numBootedLog_{0}.log'.format(self.serialport)
+        self.errorfile                 = 'errorLog_{0}.log'.format(self.serialport)
+        self.infofile                  = 'infoLog_{0}.log'.format(self.serialport)
         self.output                    = {}
         
         # initialize the parent class
@@ -34,13 +33,13 @@ class eventLogger(threading.Thread):
     #======================== thread ==========================================
     
     def run(self):
-        
+
+        # to record mote status to file, uncomment the following code
+        '''
         while True:
             # by default, don't write to local files
             pass
-            
-            # to record mote status to file, uncomment the following code
-            '''
+
             with open(self.logfile,'a') as f:
                 for key, value in self.moteState.state.items():
                     self.output[key] = value._toDict()["data"]
@@ -48,19 +47,15 @@ class eventLogger(threading.Thread):
                         f.write(str(item)+'\n')
                     # json_output = json.dumps(self.output)
 
-            with open(self.num_pkt_dropped_file, 'a') as f:
-                f.write(str(self.moteState.moteConnector.parser.parserError.numPacketDropped)+'\n')
+            with open(self.errorfile, 'a') as f:
+                f.write(str(self.moteState.moteConnector.parser.parserError.errorinfo)+'\n')
 
-
-            with open(self.num_desync_file, 'a') as f:
-                f.write("numDesync : {0}\n".format(self.moteState.moteConnector.parser.parserError.numDesync))
-
-            with open(self.num_booted_file, 'a') as f:
-                f.write("numDBooted : {0}\n".format(self.moteState.moteConnector.parser.parserError.numBooted))
+            with open(self.infofile, 'a') as f:
+                f.write(str(self.moteState.moteConnector.parser.parserInfo.errorinfo)+'\n')
                 
             time.sleep(2)
-            '''
-        
+        '''
+
     #======================== public ==========================================
     
     #======================== private =========================================

@@ -280,16 +280,16 @@ class RPL(eventBusClient.eventBusClient):
         output               = '\n'.join(output)
         if log.isEnabledFor(logging.DEBUG):
             log.debug(output)
-        #print output
+        print output
         
-#        node = u.formatIPv6Addr(source)
-#        if not (node in self.parentsDaoSeq.keys()):
-#            self.parentsDaoSeq[node] = [dao_header['RPL_DAO_Sequence']]
-#        else:
-#            self.parentsDaoSeq[node].append(dao_header['RPL_DAO_Sequence'])
-#        
-#        with open('dao_sequence.txt','a') as f:
-#            f.write(str(self.parentsDaoSeq)+'\n')
+        node = u.formatIPv6Addr(source)
+        if not (node in self.parentsDaoSeq.keys()):
+            self.parentsDaoSeq[node] = [dao_header['RPL_DAO_Sequence']]
+        else:
+            self.parentsDaoSeq[node].append(dao_header['RPL_DAO_Sequence'])
+        
+        with open('dao_sequence.txt','a') as f:
+            f.write(str(self.parentsDaoSeq)+'\n')
         
         # if you get here, the DAO was parsed correctly
         
